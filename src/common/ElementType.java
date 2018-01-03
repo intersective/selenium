@@ -1,0 +1,8 @@
+package common;
+
+
+public enum ElementType {
+
+	NAME,ID,TAGNAME,LINKTEXT,XPATH,CLASSNAME,CSSSELECTOR,PARTIALLINKTEXT
+	
+}

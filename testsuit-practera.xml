@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite- A New Student" parallel="none" preserve-order="true">
+
+	<listeners>
+		<listener class-name="listener.CustomReport"/>
+	</listeners>
+
+	<suite-files>
+		<suite-file path="testfile/practera/tests.xml" />
+		
+		<suite-file path="testfile/dashboard/tests_newbie.xml" />
+		<suite-file path="testfile/events/tests.xml" />
+		<suite-file path="testfile/dashboard/tests_student.xml" />
+		<suite-file path="testfile/spinner/tests.xml" />
+		
+		<suite-file path="testfile/practera/review.xml" />
+		
+		<suite-file path="testfile/dashboard/tests_studentredo.xml" />
+		
+		<suite-file path="testfile/practera/reviewredo.xml" />
+		
+		<suite-file path="testfile/dashboard/tests_portfolio.xml" />
+		<suite-file path="testfile/leaderboard/tests_student.xml" />
+		<suite-file path="testfile/events/tests-checkout.xml" />
+		<suite-file path="testfile/logout.xml" />
+	</suite-files>
+
+</suite>

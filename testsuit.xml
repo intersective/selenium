@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite - All" parallel="none" preserve-order="true">
+	
+	<listeners>
+		<listener class-name="listener.CustomReport"/>
+	</listeners>
+	
+	<suite-files>
+		<suite-file path="testfile/account/tests.xml" />
+		<suite-file path="testfile/dashboard/tests.xml" />
+		<suite-file path="testfile/events/tests-layout.xml" />
+		<suite-file path="testfile/leaderboard/tests.xml" />
+		<suite-file path="testfile/spinner/tests.xml" />
+		<suite-file path="testfile/logout.xml" />
+	</suite-files>
+	
+</suite>
