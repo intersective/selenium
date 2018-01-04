@@ -5,6 +5,7 @@
 
 	<listeners>
 		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+		<listener class-name="listener.TestSuiteListener"/>
 		<listener class-name="listener.CustomReport"/>
 	</listeners>
 

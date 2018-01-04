@@ -5,6 +5,7 @@
 
 	<listeners>
 		<listener class-name="listener.InitPEEnvironmentListener"/>
+		<listener class-name="listener.TestSuiteListener"/>
 		<listener class-name="listener.CustomReport"/>
 	</listeners>
 

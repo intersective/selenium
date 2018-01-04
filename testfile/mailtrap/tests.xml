@@ -10,6 +10,7 @@
 	<test name="Mail trap test" group-by-instances="true">
 		<classes>
 			<class name="testsuit.mailtrap.TestMentorEmail" />
+			<class name="testsuit.mailtrap.TestFeedBackEmail" />
 			<class name="testsuit.mailtrap.TestStudentRegistrationEmail" />
 			<class name="testsuit.appv1.TestAppv1Login" />
 		</classes>

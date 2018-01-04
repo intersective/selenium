@@ -13,8 +13,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.ITest;
 import org.testng.ITestResult;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
 import respositry.LocalStore;
@@ -48,17 +50,27 @@ public abstract class TestTemplate implements ITest {
 	
 	public abstract void main();
 	
+	@BeforeMethod
+	public void before() {
+		TestLogger.trace(String.format("starting (%s)", testname));
+	}
+	
 	@AfterMethod
-	public void afeter(ITestResult result) {
+	public void after(ITestResult result) {
 		String methodName = result.getMethod().getMethodName();
 		long duration = (System.currentTimeMillis() / 1000) - start;
-		TestLogger.trace(String.format("finishing %s - %s, %s", result.getInstanceName(), methodName, result.getMethod().getSuccessPercentage()));
+		TestLogger.trace(String.format("finishing (%s) - (%s), %s", result.getInstanceName(), methodName, result.getMethod().getSuccessPercentage()));
 		if (BuildConfig.testrail) {
 			String runCaseId = LocalStore.getInstance().getValue(result.getInstanceName());
 			if (runCaseId != null && ShareConfig.runId != null) {
 				CompletableFuture.runAsync(new AddCaseResultTask(methodName,result.getThrowable(), duration, runCaseId, ShareConfig.runId));
 			}
 		}
+	}
+	
+	@AfterClass
+	public void afterTheTest() {
+		TestLogger.trace(String.format("finished (%s)", testname));
 	}
 
 	protected void setname(String testname) {

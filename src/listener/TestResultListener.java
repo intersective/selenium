@@ -39,5 +39,5 @@ public class TestResultListener extends TestListenerAdapter {
 		super.onTestSkipped(tr);
 		TestLogger.trace(String.format("skipped %s %s", tr.getEndMillis(),tr.toString()));
 	}
-	
+
 }
