@@ -3,17 +3,15 @@
 
 <suite name="Suite - Dashboard Student Redo" parallel="none" preserve-order="true">
 
- <test name="Init test">
-    <classes>
-       <class name="testsuit.InitTest" />
-    </classes>
-  </test>
-  
-  <test name="Dashboard Student Redo test" group-by-instances="true" preserve-order="true">
-  	<classes>
-  		<class name="testsuit.TestLogin" />
-  		<class name="testsuit.dashboard.TestStudentRedoAssignment" />
-  	</classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Dashboard Student Redo test" group-by-instances="true" preserve-order="true">
+		<classes>
+	  		<class name="testsuit.TestLogin" />
+	  		<class name="testsuit.dashboard.TestStudentRedoAssignment" />
+	  	</classes>
+	</test>
 
 </suite>

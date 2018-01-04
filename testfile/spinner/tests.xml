@@ -3,19 +3,17 @@
 
 <suite name="Suite - Spinner" parallel="none" preserve-order="true">
 
-  <test name="Init test">
-    <classes>
-       <class name="testsuit.InitTest" />
-    </classes>
-  </test>
-
-  <test name="Spinner page test" group-by-instances="true" preserve-order="true">
-  	<classes>
-  		<class name="testsuit.TestLogin" />
-  		<class name="testsuit.spinner.TestSpinnerLayout" />
-  		<class name="testsuit.spinner.TestSpinWheel" />
-  		<class name="testsuit.dashboard.TestDashBoardData" />
-  	</classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Spinner page test" group-by-instances="true" preserve-order="true">
+		<classes>
+	  		<class name="testsuit.TestLogin" />
+	  		<class name="testsuit.spinner.TestSpinnerLayout" />
+	  		<class name="testsuit.spinner.TestSpinWheel" />
+	  		<class name="testsuit.dashboard.TestDashBoardData" />
+	  	</classes>
+	</test>
 
 </suite>

@@ -3,17 +3,15 @@
 
 <suite name="Suite - Student Leaderboard" parallel="none" preserve-order="true">
 
-  <test name="Init test">
-    <classes>
-       <class name="testsuit.InitTest" />
-    </classes>
-  </test>
-
-  <test name="Student Leaderboard test" group-by-instances="true">
-  	<classes>
-  		<class name="testsuit.TestLogin" />
-  		<class name="testsuit.leaderboard.TestStudentRanking" />
-  	</classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Student Leaderboard test" group-by-instances="true">
+		<classes>
+	  		<class name="testsuit.TestLogin" />
+	  		<class name="testsuit.leaderboard.TestStudentRanking" />
+	  	</classes>
+	</test>
 
 </suite>

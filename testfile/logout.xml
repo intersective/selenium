@@ -3,10 +3,14 @@
 
 <suite name="Suite - Log out" parallel="none" preserve-order="true">
 
-  <test name="Log out test">
-    <classes>
-       <class name="testsuit.TestLogout" />
-    </classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Log out test">
+		<classes>
+			<class name="testsuit.TestLogout" />
+		</classes>
+	</test>
   
 </suite> 

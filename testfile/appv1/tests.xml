@@ -3,26 +3,24 @@
 
 <suite name="Suite - Appv1" parallel="none" preserve-order="true">
 
-  <test name="Init test">
-    <classes>
-       <class name="testsuit.Appv1InitTest" />
-    </classes>
-  </test>
-
-  <test name="Appv1 test" group-by-instances="true">
-  	<classes>
-  		<class name="testsuit.appv1.TestAppv1Login" />
-  		<class name="testsuit.appv1.TestTopic" />
-  		<class name="testsuit.appv1.assessments.TestAppv1AssessmentQuiz" />
-  		<class name="testsuit.appv1.assessments.TestAppv1AssessmentReflection" />
-  		<class name="testsuit.appv1.assessments.TestAppv1AnyFileAssessment" />
-  		<class name="testsuit.appv1.assessments.TestAppv1AssessmentModerated" />
-  		<class name="testsuit.appv1.TestSecondMilestoneTopic" />
-  		<class name="testsuit.appv1.assessments.SecondMilestone" />
-  		<class name="testsuit.appv1.assessments.SecondMilestoneReflection" />
-  		<class name="testsuit.appv1.assessments.SecondMilestoneModerated" />
-  		<class name="testsuit.appv1.TestLogout" />
-  	</classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Appv1 test" group-by-instances="true">
+		<classes>
+			<class name="testsuit.appv1.TestAppv1Login" />
+  			<class name="testsuit.appv1.TestTopic" />
+  			<class name="testsuit.appv1.assessments.TestAppv1AssessmentQuiz" />
+	  		<class name="testsuit.appv1.assessments.TestAppv1AssessmentReflection" />
+	  		<class name="testsuit.appv1.assessments.TestAppv1AnyFileAssessment" />
+	  		<class name="testsuit.appv1.assessments.TestAppv1AssessmentModerated" />
+	  		<class name="testsuit.appv1.TestSecondMilestoneTopic" />
+	  		<class name="testsuit.appv1.assessments.SecondMilestone" />
+	  		<class name="testsuit.appv1.assessments.SecondMilestoneReflection" />
+	  		<class name="testsuit.appv1.assessments.SecondMilestoneModerated" />
+	  		<class name="testsuit.appv1.TestLogout" />
+	  	</classes>
+	</test>
 
 </suite>

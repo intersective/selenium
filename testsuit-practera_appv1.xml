@@ -4,6 +4,7 @@
 <suite name="Suite - A New Student for appv1" parallel="none" preserve-order="true">
 
 	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
 		<listener class-name="listener.CustomReport"/>
 	</listeners>
 

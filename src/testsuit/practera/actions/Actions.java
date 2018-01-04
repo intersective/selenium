@@ -27,6 +27,7 @@ public class Actions implements PageAction {
 	public void logout(SeleniumWaiter sw, String userMenuLocation) {
 		UIAction.waitForElementVisible(sw, String.format("div.navbar-buttons > ul.nav > li:nth-of-type(%s) > a.dropdown-toggle", userMenuLocation)).click();
 		UIAction.waitForElementVisible(sw, String.format("div.navbar-buttons > ul.nav > li:nth-of-type(%s) > ul.user-menu > li:nth-of-type(4) > a", userMenuLocation)).click();
+		TestLogger.trace("we logout");
 	}
 	
 	public void login(SeleniumWaiter sw, String userName, String password) {
@@ -44,6 +45,8 @@ public class Actions implements PageAction {
 			loginSubmitBtn.click();
 			sw.waitForDocumentReady(BuildConfig.pageWaitTime);
 			this.waitToastMessageDisappear(sw);
+		} else {
+			TestLogger.trace("we have login");
 		}
 	}
 	
@@ -74,8 +77,7 @@ public class Actions implements PageAction {
 	}
 	
 	public void getResultFromDropBoxList(SeleniumWaiter sw, String searchItem) {
-		sw.waitForElement("#select2-drop > .select2-search > input")
-			.sendKeys(new String[] { searchItem });
+		sw.waitForElement("#select2-drop > .select2-search > input").sendKeys(new String[] { searchItem });
 		sw.waitForElement(".select2-results> li > div > span").click();
 	}
 	

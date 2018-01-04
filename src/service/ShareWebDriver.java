@@ -68,4 +68,10 @@ public class ShareWebDriver {
 		return sw;
 	}
 
+	public void releaseResource() {
+		if (driver != null) {
+			driver.quit();
+		}
+	}
+	
 }

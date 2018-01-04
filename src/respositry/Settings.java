@@ -6,11 +6,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.UUID;
 
 import service.Tools;
-
-import common.ShareConfig;
 
 
 public class Settings {
@@ -42,9 +39,6 @@ public class Settings {
 					f.set(t, e.getValue());
 				}
 			}
-			String localRunId = UUID.randomUUID().toString();
-			System.out.println(String.format("local run id %s", localRunId));
-			ShareConfig.seleniumRunId = localRunId;
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException
 				| NoSuchFieldException | SecurityException e1) {

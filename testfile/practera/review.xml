@@ -3,18 +3,16 @@
 
 <suite name="Suite - Practera Review" parallel="none" preserve-order="true">
 
-  <test name="Init test">
-    <classes>
-       <class name="testsuit.InitTest" />
-    </classes>
-  </test>
-
-  <test name="Practera Review test" group-by-instances="true" preserve-order="true">
-  	<classes>
-  		<class name="testsuit.practera.TestReview" />
-  		<class name="testsuit.practera.TestMentorReview" />
-  		<class name="testsuit.practera.TestPublishReview" />
-  	</classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Practera Review test" group-by-instances="true" preserve-order="true">
+		<classes>
+	  		<class name="testsuit.practera.TestReview" />
+	  		<class name="testsuit.practera.TestMentorReview" />
+	  		<class name="testsuit.practera.TestPublishReview" />
+	  	</classes>
+	</test>
 
 </suite>

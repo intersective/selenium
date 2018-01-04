@@ -3,18 +3,16 @@
 
 <suite name="Suite - Dashboard Newbie" parallel="none" preserve-order="true">
 
- <test name="Init test">
-    <classes>
-       <class name="testsuit.InitTest" />
-    </classes>
-  </test>
-  
-  <test name="Dashboard Newbie test" group-by-instances="true" preserve-order="true">
-  	<classes>
-  		<class name="testsuit.TestLogin" />
-  		<class name="testsuit.dashboard.TestNewbie" />
-  		<class name="testsuit.dashboard.TestNewbieAssignment" />
-  	</classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Dashboard Newbie test" group-by-instances="true" preserve-order="true">
+		<classes>
+	  		<class name="testsuit.TestLogin" />
+	  		<class name="testsuit.dashboard.TestNewbie" />
+	  		<class name="testsuit.dashboard.TestNewbieAssignment" />
+	  	</classes>
+	</test>
 
 </suite>

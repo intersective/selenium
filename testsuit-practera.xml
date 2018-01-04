@@ -4,6 +4,7 @@
 <suite name="Suite- A New Student" parallel="none" preserve-order="true">
 
 	<listeners>
+		<listener class-name="listener.InitPEEnvironmentListener"/>
 		<listener class-name="listener.CustomReport"/>
 	</listeners>
 

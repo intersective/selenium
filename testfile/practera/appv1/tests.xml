@@ -3,17 +3,15 @@
 
 <suite name="Suite - Practera appv1" parallel="none" preserve-order="true">
 
-  <test name="Init test">
-    <classes>
-       <class name="testsuit.Appv1InitTest" />
-    </classes>
-  </test>
-
-  <test name="Practera appv1 test" group-by-instances="true">
-  	<classes>
-  		<class name="testsuit.practera.TestAppV1Enrolment" />
-  		<class name="testsuit.practera.Appv1TestRegistration" />
-  	</classes>
-  </test>
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Practera appv1 test" group-by-instances="true">
+		<classes>
+			<class name="testsuit.practera.TestAppV1Enrolment" />
+			<class name="testsuit.practera.Appv1TestRegistration" />
+		</classes>
+	</test>
 
 </suite>

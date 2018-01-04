@@ -6,42 +6,23 @@ import model.User;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.testng.ITest;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 import respositry.LocalDataBase;
 import respositry.LocalStore;
 import respositry.Settings;
 import service.AssignmentDataService;
 import service.ShareWebDriver;
-import service.TestLogger;
 import service.TestRailService;
+
 import common.BuildConfig;
 import common.ShareConfig;
 
 
-public class InitTest implements ITest {
+public class InitTest {
 
-	private String testname;
-	
-	@BeforeClass
-	public void setup() {
-		testname = "test initialisation";
-	}
-	
-	@Test(description = "test initialisation")
 	public void main() {
-		LocalStore ls = LocalStore.getInstance();
-		if ("true".equals(ls.getValue("InitTest"))) {
-			return;
-		}
-		ls.addValue("InitTest", "true");
-		
 		init();
-		initUserData();
+		this.initUserData();
 	}
 
 	protected void init() {
@@ -86,14 +67,4 @@ public class InitTest implements ITest {
 		ls.setUserSpinChancesKey(String.format("%s-spinChances", BuildConfig.userName));
 	}
 	
-	@AfterMethod
-	public void after(ITestResult result) {
-		TestLogger.trace("initialisation completed");
-	}
-	
-	@Override
-	public String getTestName() {
-		return testname;
-	}
-
 }
