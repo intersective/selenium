@@ -14,6 +14,7 @@
 		<suite-file path="testfile/appv1/tests.xml" />
 		<suite-file path="testfile/practera/appv1/tests_review.xml" />
 		<suite-file path="testfile/practera/appv1/tests_review_publish.xml" />
+		<suite-file path="testfile/appv1/tests_mentor.xml" />
 		<suite-file path="testfile/mailtrap/tests.xml" />
 	</suite-files>
 

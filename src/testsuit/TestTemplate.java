@@ -101,8 +101,8 @@ public abstract class TestTemplate implements ITest {
 			return driver.findElement(Tools.getBy(type, locator));
 		} catch (org.openqa.selenium.WebDriverException e) {
 			TestLogger.error(Throwables.getStackTraceAsString(e));
-			return null;
 		}
+		return null;
 	}
 	
 	protected WebElement findElement(String locator) {
@@ -110,8 +110,8 @@ public abstract class TestTemplate implements ITest {
 			return driver.findElement(Tools.getBy(locator));
 		} catch (org.openqa.selenium.WebDriverException e) {
 			TestLogger.error(Throwables.getStackTraceAsString(e));
-			return null;
 		}
+		return null;
 	}
 	
 	protected WebElement findElement(WebElement parentElement, String locator) {
@@ -139,8 +139,8 @@ public abstract class TestTemplate implements ITest {
 			return driver.findElements(Tools.getBy(type, locator));
 		} catch (org.openqa.selenium.WebDriverException e) {
 			TestLogger.error(Throwables.getStackTraceAsString(e));
-			return null;
 		}
+		return null;
 	}
 	
 	protected List<WebElement> findElements(String locator) {
