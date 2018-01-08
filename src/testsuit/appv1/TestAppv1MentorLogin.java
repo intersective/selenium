@@ -1,10 +1,14 @@
 package testsuit.appv1;
 
 
+import java.util.List;
+
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import service.Tools;
+
 import common.BuildConfig;
 
 
@@ -22,7 +26,9 @@ public class TestAppv1MentorLogin extends TestAppv1Login {
 	public void main() {
 		super.main();
 		
-		sw.waitForElements(".tab-nav > a:nth-of-type(1)").get(1).click();
+		List<WebElement> tabs = sw.waitForElements(".tab-nav > a:nth-of-type(1)");
+		tabs.get(tabs.size() - 1).click();
+		
 		Tools.forceToWait(2);
 	}
 
