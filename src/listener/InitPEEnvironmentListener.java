@@ -19,6 +19,7 @@ public class InitPEEnvironmentListener implements IExecutionListener {
 		String localRunId = UUID.randomUUID().toString();
 		System.out.println(String.format("local run id %s", localRunId));
 		ShareConfig.seleniumRunId = localRunId;
+		ShareConfig.systemName = "pe";
 		TestLogger.trace(String.format("Personal Edge test suites start at %s", System.currentTimeMillis()));
 		(new InitTest()).main();
 	}

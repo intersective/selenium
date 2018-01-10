@@ -19,6 +19,7 @@ public class InitAppv1EnvironmentListener implements IExecutionListener {
 		String localRunId = UUID.randomUUID().toString();
 		System.out.println(String.format("local run id %s", localRunId));
 		ShareConfig.seleniumRunId = localRunId;
+		ShareConfig.systemName = "appv1";
 		TestLogger.trace(String.format("Appv1 test suites start at %s", System.currentTimeMillis()));
 		(new Appv1InitTest()).main();
 	}

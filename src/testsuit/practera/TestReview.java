@@ -60,8 +60,8 @@ public class TestReview extends TestTemplate {
 		
 		for (int i = 1; i < total; i++) {
 			WebElement assessmentElement = sw.waitForElement(String.format(".content-container > div#assessments > .tab-content > #moderated > div > table > tbody > tr:nth-of-type(%s)", i));
-			assessmentElement.findElement(Tools.getBy("td:nth-of-type(4) > a")).click();
-			sw.waitForElement("#reviewContainer > div#assessments > ul#reviewTab > li:nth-of-type(3)").click();
+			assessmentElement.findElement(Tools.getBy("td:nth-of-type(3) > a")).click();// unassigned
+			sw.waitForElement("#reviewContainer > div#assessments > ul#reviewTab > li:nth-of-type(2)").click();
 			Tools.forceToWait(1);
 			
 			boolean found = false;

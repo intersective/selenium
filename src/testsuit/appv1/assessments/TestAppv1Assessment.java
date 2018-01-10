@@ -157,7 +157,7 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 			Assert.assertEquals(Tools.getElementTextContent(
 					sw.waitForElement(String.format(".jsmbp-detail-items > div:nth-of-type(%s) .item-btns > button", assessmentLocation + 2))).toLowerCase(), "view");
 		} catch (Error e) {
-			findElement(".popup> .popup-buttons > button").click();
+			findElement(".popup> .popup-buttons > button").click();// a window pops up only if there is a submission error
 			throw new AssertionError(e);
 		}
 	}

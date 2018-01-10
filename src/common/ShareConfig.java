@@ -8,4 +8,6 @@ public class ShareConfig {
 	public static boolean isTestLoginRun;
 	public static String createdEventId;
 	
+	public static String systemName;
+	
 }

@@ -29,6 +29,8 @@ import org.testng.internal.Utils;
 import org.testng.log4testng.Logger;
 import org.testng.xml.XmlSuite;
 
+import common.ShareConfig;
+
 
 /**
  * Reporter that generates a single-page HTML report of the test results.
@@ -50,7 +52,7 @@ public class CustomReport implements IReporter {
     private String currentTimeStr = String.format("%s-%s-%s-%s-%s", current.get(Calendar.YEAR), current.get(Calendar.MONTH) + 1, current.get(Calendar.DAY_OF_MONTH), 
     		current.get(Calendar.HOUR_OF_DAY), current.get(Calendar.MINUTE));
 
-    private String fileName = String.format("custom-report.html.%s",currentTimeStr);
+    private String fileName;
 
     private static final String JVM_ARG = "emailable.custom-report.name";
 
@@ -66,6 +68,7 @@ public class CustomReport implements IReporter {
 
     @Override
     public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
+    	fileName = String.format("custom-report-%s.html.%s", ShareConfig.systemName, currentTimeStr);
         df.setTimeZone(current.getTimeZone());
     	try {
             writer = createWriter(outputDirectory);

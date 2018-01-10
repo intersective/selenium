@@ -63,14 +63,14 @@ public class TestPublishReview extends TestTemplate {
 		
 		for (int i = 1; i < total; i++) {
 			WebElement assessmentElement = sw.waitForElement(String.format(".content-container > div#assessments > .tab-content > #moderated > div> table > tbody > tr:nth-of-type(%s)", i));
-			assessmentElement.findElement(Tools.getBy("td:nth-of-type(4) > a")).click();
+			assessmentElement.findElement(Tools.getBy("td:nth-of-type(5) > a")).click();// ready to publish
 			Tools.forceToWait(1);
 			
-			List<WebElement> completed = sw.waitForListContent("#reviewContainer > div#assessments > .tab-content > div#complete > div > table > tbody > tr");
-			Assert.assertNotNull(completed);
-			int ctotal = completed.size() + 1;
+			List<WebElement> readytopublish = sw.waitForListContent("#reviewContainer > div#assessments > .tab-content > div#readytopublish > div > table > tbody > tr");
+			Assert.assertNotNull(readytopublish);
+			int ctotal = readytopublish.size() + 1;
 			for (int j = 1; j < ctotal; j++) {
-				String one = String.format(String.format("#reviewContainer > div#assessments > .tab-content > div#complete > div > table > tbody > tr:nth-of-type(%s)", j));
+				String one = String.format(String.format("#reviewContainer > div#assessments > .tab-content > div#readytopublish > div > table > tbody > tr:nth-of-type(%s)", j));
 				if (sw.waitForElement(one) != null && userName.equals(Tools.getElementTextContent(sw.waitForElement(String.format("%s td:nth-of-type(1) > span", one))))) {
 					WebElement publish = null;
 					try {
