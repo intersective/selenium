@@ -4,7 +4,7 @@
 <suite name="Suite - Student Leaderboard" parallel="none" preserve-order="true">
 
 	<listeners>
-		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+		<listener class-name="listener.InitPEEnvironmentListener"/>
 	</listeners>
 	
 	<test name="Student Leaderboard test" group-by-instances="true">

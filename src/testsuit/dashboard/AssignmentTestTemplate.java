@@ -127,7 +127,7 @@ public abstract class AssignmentTestTemplate extends TestTemplate {
 		    
 			try {
 				dashboardActions.selectFile(sw);
-				waitForFileUploading(3);
+				this.waitForFileUploading(3);
 			} catch (Exception e) {
 				TestLogger.error(Throwables.getStackTraceAsString(e));
 			} finally {

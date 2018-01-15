@@ -21,9 +21,8 @@ public class TestAppV1Enrolment extends TestEnrolment {
 	public void main() {
 		driver.get(BuildConfig.practeraUrl);
 		actions.login(sw, BuildConfig.appv1AdminUser, BuildConfig.appv1AdminPassword);
-		super.enroll("4", "5", "2", BuildConfig.appv1EnrolmentFile);
+		super.enroll("4", "5", "2", "App V1 timeline 1", BuildConfig.appv1EnrolmentFile);
 		
-		driver.get(regUrl);
 		BuildConfig.appv1UserName = String.format("%s@%s", studentUserName, BuildConfig.testDomain);
 		LocalDataBase.getInstance().addUser(BuildConfig.appv1Id, BuildConfig.appv1UserName, regUrl);
 	}

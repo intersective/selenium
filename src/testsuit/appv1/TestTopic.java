@@ -57,6 +57,7 @@ public class TestTopic extends Appv1TestTemplate {
 	}
 	
 	protected void checkTopics() {
+		Tools.forceToWait(5);
 		List<WebElement> assessments = sw.waitForListContent(".jsmbp-detail-items > div");
 		Assert.assertNotNull(assessments);
 		

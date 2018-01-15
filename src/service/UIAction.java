@@ -39,10 +39,6 @@ public class UIAction {
 	    robot.keyRelease(java.awt.event.KeyEvent.VK_ENTER);
 	}
 	
-	public static WebElement waitForElementVisible(SeleniumWaiter sw, String locator) {
-		return waitForElementVisible(sw, locator, BuildConfig.elementWaitTime);
-	}
-	
 	/**
 	 * wait for an element becoming visible
 	 * @param sw
@@ -51,21 +47,29 @@ public class UIAction {
 	 * @param timeoutInSeconds
 	 * @return WebElement
 	 */
-	public static WebElement waitForElementVisible(SeleniumWaiter sw, String locator, int waitTime) {
+	public static WebElement waitForElementVisible(SeleniumWaiter sw, String locator, ElementType type, int waitTime) {
 		WebElement webElement;
 		
 		if (BuildConfig.headless) {
 			Tools.forceToWait(8);
-			webElement = sw.waitForElement(locator, ElementType.CSSSELECTOR, waitTime);
+			webElement = sw.waitForElement(locator, type, waitTime);
 		} else {
-			webElement = sw.waitForElement(locator, ElementType.CSSSELECTOR, waitTime);
+			webElement = sw.waitForElement(locator, type, waitTime);
 			while (webElement != null && !webElement.isDisplayed()) {
 				Tools.forceToWaitInMilli(100);
-				webElement = sw.waitForElement(locator, ElementType.CSSSELECTOR, waitTime);
+				webElement = sw.waitForElement(locator, type, waitTime);
 			}
 		}
 		
 		return webElement;
+	}
+	
+	public static WebElement waitForElementVisible(SeleniumWaiter sw, String locator) {
+		return waitForElementVisible(sw, locator, BuildConfig.elementWaitTime);
+	}
+	
+	public static WebElement waitForElementVisible(SeleniumWaiter sw, String locator, int waitTime) {
+		return waitForElementVisible(sw, locator, ElementType.CSSSELECTOR, waitTime);
 	}
 	
 	public static WebElement waitForElementVisibleWithAssert(SeleniumWaiter sw, String locator) {

@@ -50,6 +50,7 @@ public class BuildConfig {
 	
 	public static int peId;
 	public static int appv1Id;
+	public static int jobsmartId;
 	
 	public static String testDomain;
 	public static String appv1Url;
@@ -62,5 +63,12 @@ public class BuildConfig {
 	public static String appV1MentorPassword;
 	
 	public static boolean headless;
+	
+	public static String jobsmartAdmin;
+	public static String jobsmartAdminPassword;
+	public static String jobsmartEnrolmentFile;
+	public static String jobsmartStudent;
+	public static String jobsmartStudentPassword;
+	public static String jobsmartUrl;
 	
 }

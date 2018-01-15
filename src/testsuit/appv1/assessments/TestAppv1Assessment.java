@@ -1,8 +1,6 @@
 package testsuit.appv1.assessments;
 
 
-import java.awt.AWTException;
-import java.io.File;
 import java.util.List;
 
 import model.Assessment;
@@ -14,12 +12,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 
 import service.AssignmentDataService;
-import service.TestLogger;
 import service.Tools;
-import service.UIAction;
 import testsuit.Appv1TestTemplate;
 
-import com.google.common.base.Throwables;
 import common.BuildConfig;
 import common.ElementType;
 
@@ -109,30 +104,6 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 		}
 	}
 
-	private void fileUpload(String filePath) {
-		if (BuildConfig.headless) {
-			sw.waitForElement("#fsp-fileUpload").sendKeys(new String [] { String.format("%s%s%s", BuildConfig.evidenceFolder, File.separator, filePath) });
-			waitForFileUploading(3);
-			Tools.forceToWait(BuildConfig.jsWaitTime);
-		} else {
-			String mainWindowHandle = driver.getWindowHandle();
-			TestLogger.trace(String.format("main window %s", mainWindowHandle));
-			Tools.setContentToSystemClipboard(String.format("%s%s%s", BuildConfig.evidenceFolder, File.separator, filePath));
-			WebElement chooseFile = waitForVisibleWithScroll(".fsp-picker .fsp-content .fsp-select-labels");
-			chooseFile.click();
-			Tools.forceToWait(BuildConfig.jsWaitTime);
-			try {
-				UIAction.pasteAndEnter();
-				waitForFileUploading(3);
-			} catch (AWTException e) {
-				TestLogger.error(Throwables.getStackTraceAsString(e));
-			} finally {
-				driver.switchTo().window(mainWindowHandle);// switch back
-				Tools.forceToWait(BuildConfig.jsWaitTime);
-			}
-		}
-	}
-	
 	protected void submit() {
 		waitForVisibleWithScroll("//button[text()='Submit']", ElementType.XPATH).click();
 		WebElement submitConfirm = sw.waitForElement(".popup");

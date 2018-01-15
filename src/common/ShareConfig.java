@@ -10,4 +10,6 @@ public class ShareConfig {
 	
 	public static String systemName;
 	
+	public static String currentTimeline;
+	
 }

@@ -3,15 +3,15 @@ package testsuit;
 
 import org.openqa.selenium.WebElement;
 
-import com.google.common.base.Throwables;
-
 import service.TestLogger;
 import service.Tools;
+
+import com.google.common.base.Throwables;
 import common.BuildConfig;
 import common.ElementType;
 
 
-public abstract class Appv1TestTemplate extends TestTemplate {
+public abstract class JobSmartTestTemplate extends TestTemplate {
 
 	@Override
 	protected void waitForLoadFinished() {
@@ -22,7 +22,7 @@ public abstract class Appv1TestTemplate extends TestTemplate {
 		}
 		Tools.forceToWait(BuildConfig.jsWaitTime);
 	}
-
+	
 	@Override
 	protected void waitForFileUploading(int timeoutInSeconds) {
 		try {

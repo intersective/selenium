@@ -39,7 +39,7 @@ public class TestEnrolment extends TestTemplate {
 
 	@Test(description = "test a new student enrolment", groups = "practera")
 	public void main() {
-		enroll("5", "6", "3", BuildConfig.enrolmentFile);
+		enroll("5", "6", "3", "Timeline", BuildConfig.enrolmentFile);
 		
 		driver.get(regUrl);
 		
@@ -83,7 +83,8 @@ public class TestEnrolment extends TestTemplate {
 	/**
 	 * enroll a student to a program
 	 */
-	protected void enroll(String partiLocation, String regUrlLocation, String userMenuLocation, String enrolmentFile) {
+	protected void enroll(String partiLocation, String regUrlLocation, String userMenuLocation, String enrolmentTimeline, String enrolmentFile) {
+		Tools.forceToWait(5);
 		WebElement sideBar = actions.getSidebar(sw);
 		WebElement parti = sideBar.findElement(Tools.getBy(String.format("ul.nav li.hsub:nth-of-type(%s)", partiLocation)));
 		parti.findElement(Tools.getBy(ElementType.TAGNAME, "a")).click();
@@ -96,7 +97,7 @@ public class TestEnrolment extends TestTemplate {
 		WebElement timelineSelect = enrolmentAddForm.findElement(Tools.getBy(".timeline-select"));
 		Assert.assertNotNull(timelineSelect);
 		Select timelineOptions = new Select(timelineSelect.findElement(Tools.getBy("#EnrolmentTimelineId")));
-		timelineOptions.selectByIndex(1);
+		timelineOptions.selectByVisibleText(enrolmentTimeline);
 		this.enrolmentFile = enrolmentFile;
 		this.studentUserName = this.supplyStudentInfo();
 		Tools.forceToWait(1);

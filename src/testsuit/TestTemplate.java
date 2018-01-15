@@ -1,6 +1,8 @@
 package testsuit;
 
 
+import java.awt.AWTException;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,8 +27,10 @@ import service.SeleniumWaiter;
 import service.ShareWebDriver;
 import service.TestLogger;
 import service.Tools;
+import service.UIAction;
 
 import com.google.common.base.Throwables;
+
 import common.BuildConfig;
 import common.ElementType;
 import common.ShareConfig;
@@ -143,6 +147,19 @@ public abstract class TestTemplate implements ITest {
 		return null;
 	}
 	
+	protected List<WebElement> findElements(WebElement parentElement, String locator) {
+		return findElements(parentElement, locator, ElementType.CSSSELECTOR);
+	}
+	
+	protected List<WebElement> findElements(WebElement parentElement, String locator, ElementType type) {
+		try {
+			return parentElement.findElements(Tools.getBy(type, locator));
+		} catch (org.openqa.selenium.WebDriverException e) {
+			TestLogger.error(Throwables.getStackTraceAsString(e));
+		}
+		return null;
+	}
+	
 	protected List<WebElement> findElements(String locator) {
 		try {
 			return driver.findElements(Tools.getBy(locator));
@@ -159,8 +176,8 @@ public abstract class TestTemplate implements ITest {
 	 */
 	protected void waitForFileUploading(int timeoutInSeconds) {
 		try {
-			while (sw.waitForElement("div[ng-show='!LVm.showLoading']", ElementType.CSSSELECTOR, timeoutInSeconds) != null) {
-				TestLogger.trace("waiting for uploading");
+			while (sw.waitForElement("iframe#filepicker_dialog", ElementType.CSSSELECTOR, timeoutInSeconds) != null) {
+				TestLogger.trace("iframe filepicker_dialog waiting for uploading");
 				Tools.forceToWaitInMilli(100);
 			}
 		} catch (Exception e) {
@@ -203,6 +220,30 @@ public abstract class TestTemplate implements ITest {
 		Actions actions = new Actions(driver);
 		actions.moveToElement(element);
 		actions.perform();
+	}
+	
+	protected void fileUpload(String filePath) {
+		if (BuildConfig.headless) {
+			sw.waitForElement("#fsp-fileUpload").sendKeys(new String [] { String.format("%s%s%s", BuildConfig.evidenceFolder, File.separator, filePath) });
+			this.waitForFileUploading(3);
+			Tools.forceToWait(BuildConfig.jsWaitTime);
+		} else {
+			String mainWindowHandle = driver.getWindowHandle();
+			TestLogger.trace(String.format("main window %s", mainWindowHandle));
+			Tools.setContentToSystemClipboard(String.format("%s%s%s", BuildConfig.evidenceFolder, File.separator, filePath));
+			WebElement chooseFile = waitForVisibleWithScroll(".fsp-picker .fsp-content .fsp-select-labels");
+			chooseFile.click();
+			Tools.forceToWait(BuildConfig.jsWaitTime);
+			try {
+				UIAction.pasteAndEnter();
+				this.waitForFileUploading(3);
+			} catch (AWTException e) {
+				TestLogger.error(Throwables.getStackTraceAsString(e));
+			} finally {
+				driver.switchTo().window(mainWindowHandle);// switch back
+				Tools.forceToWait(BuildConfig.jsWaitTime);
+			}
+		}
 	}
 	
 }

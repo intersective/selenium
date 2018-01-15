@@ -4,7 +4,7 @@
 <suite name="Suite - Log out" parallel="none" preserve-order="true">
 
 	<listeners>
-		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+		<listener class-name="listener.InitPEEnvironmentListener"/>
 	</listeners>
 	
 	<test name="Log out test">

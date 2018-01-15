@@ -4,7 +4,7 @@
 <suite name="Suite - Events Check out" parallel="none" preserve-order="true">
 
 	<listeners>
-		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+		<listener class-name="listener.InitPEEnvironmentListener"/>
 	</listeners>
 	
 	<test name="Events Check out test" group-by-instances="true">

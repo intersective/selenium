@@ -4,7 +4,7 @@
 <suite name="Suite - Practera Review Redo" parallel="none" preserve-order="true">
 
 	<listeners>
-		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+		<listener class-name="listener.InitPEEnvironmentListener"/>
 	</listeners>
 	
 	<test name="Practera Review Redo test" group-by-instances="true" preserve-order="true">

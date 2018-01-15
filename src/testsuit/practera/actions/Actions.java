@@ -82,10 +82,7 @@ public class Actions implements PageAction {
 	}
 	
 	public String enrolStudentViaCSV(SeleniumWaiter sw, String enrolmentFile) {
-		Calendar current = Calendar.getInstance();
-		String participantId = String.format("%s%s%s%s%s", current.get(Calendar.YEAR), Tools.prependZero(current.get(Calendar.MONTH) + 1), 
-				Tools.prependZero(current.get(Calendar.DAY_OF_MONTH)), Tools.prependZero(current.get(Calendar.HOUR_OF_DAY)),
-				Tools.prependZero(current.get(Calendar.MINUTE)));
+		String participantId = generateStudentId();
 		String studentUserName = String.format("selenium.%s", participantId);
 		String[] participantIds = new String[1];
 		participantIds[0] = participantId;
@@ -106,14 +103,38 @@ public class Actions implements PageAction {
 	}
 	
 	public String enrolStudentViaTextBox(SeleniumWaiter sw) {
-		Calendar current = Calendar.getInstance();
-		String participantId = String.format("%s%s%s%s%s", current.get(Calendar.YEAR), Tools.prependZero(current.get(Calendar.MONTH) + 1),
-				Tools.prependZero(current.get(Calendar.DAY_OF_MONTH)), Tools.prependZero(current.get(Calendar.HOUR_OF_DAY)),
-				Tools.prependZero(current.get(Calendar.MINUTE)));
+		String participantId = generateStudentId();
 		String studentUserName = String.format("selenium.%s", participantId);
 		sw.waitForElement("textArea[name='data[Enrolment][csvtext]']")
 				.sendKeys(new String[] { String.format("%s@%s,%s,%s,fullaccess", studentUserName, BuildConfig.testDomain, participantId, studentUserName) });
 		return studentUserName;
+	}
+	
+	private String generateStudentId() {
+		Calendar current = Calendar.getInstance();
+		return String.format("%s%s%s%s%s%s", current.get(Calendar.YEAR), Tools.prependZero(current.get(Calendar.MONTH) + 1), 
+				Tools.prependZero(current.get(Calendar.DAY_OF_MONTH)), Tools.prependZero(current.get(Calendar.HOUR_OF_DAY)),
+				Tools.prependZero(current.get(Calendar.MINUTE)), Tools.prependZero(current.get(Calendar.SECOND)));
+	}
+	
+	public String createNewTimeLine(SeleniumWaiter sw) {
+		sw.waitForElement("//span[text()='Project']", ElementType.XPATH).click();
+		sw.waitForElement("//a[@href='/admin/project/projects']", ElementType.XPATH).click();
+		sw.waitForElement("#projectTab > li:nth-of-type(2) > a").click();
+		sw.waitForElement("#project-list .thumbnail:nth-of-type(1) .buttons a i").click();// to create time line page
+		
+		Calendar now = Calendar.getInstance();
+		String currentTimelineName = String.format("selenium-timeline.%s%s%s%s%s%s", now.get(Calendar.YEAR), Tools.prependZero(now.get(Calendar.MONTH) + 1),
+				Tools.prependZero(now.get(Calendar.DAY_OF_MONTH)), Tools.prependZero(now.get(Calendar.HOUR_OF_DAY)), Tools.prependZero(now.get(Calendar.MINUTE)),
+				Tools.prependZero(now.get(Calendar.SECOND)));
+		sw.waitForElement("input#TimelineTitle").sendKeys(new String[] { currentTimelineName });
+		sw.waitForElement("textArea#TimelineDescription").sendKeys(new String[] { String.format("test automation job smart time line %s", currentTimelineName) });
+		sw.waitForElement("input#TimelineStartDate").sendKeys(
+				new String[] { String.format("%s-%s-%s", now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.MONTH) + 1, now.get(Calendar.YEAR)) });
+		sw.waitForElement("textArea#TimelineDescription").click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
+		sw.waitForElement("button[type='submit']").click();
+		return currentTimelineName;
 	}
 	
 }
