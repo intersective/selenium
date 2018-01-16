@@ -30,7 +30,6 @@ import service.Tools;
 import service.UIAction;
 
 import com.google.common.base.Throwables;
-
 import common.BuildConfig;
 import common.ElementType;
 import common.ShareConfig;
@@ -243,6 +242,29 @@ public abstract class TestTemplate implements ITest {
 				driver.switchTo().window(mainWindowHandle);// switch back
 				Tools.forceToWait(BuildConfig.jsWaitTime);
 			}
+		}
+	}
+	
+	protected void postVideoByUrl(String url) {
+		String mainWindowHandle = driver.getWindowHandle();
+		TestLogger.trace(String.format("main window %s", mainWindowHandle));
+		
+		sw.waitForElement(".fsp-picker .fsp-modal__sidebar > div > div:nth-of-type(6)").click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
+		
+		Actions builder = new Actions(driver);
+		WebElement closeBtn = sw.waitForElement(".fsp-picker .fsp-header > span:nth-of-type(2)");
+		builder.moveToElement(closeBtn).build().perform();// allow the side bar close
+		Tools.forceToWait(5);
+		
+		WebElement inputUrl = sw.waitForElement(".fsp-picker .fsp-content input[type='url']");
+		inputUrl.sendKeys(new String[] { url });
+		sw.waitForElement(".fsp-picker .fsp-content button[type='submit']").click();
+		try {
+			this.waitForFileUploading(3);
+		} finally {
+			driver.switchTo().window(mainWindowHandle);// switch back
+			Tools.forceToWait(BuildConfig.jsWaitTime);
 		}
 	}
 	

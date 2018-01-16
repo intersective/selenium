@@ -136,7 +136,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		} else if (type.contains("video")) {
 			scrollIfNotVisible(q.findElement(Tools.getBy("button:nth-of-type(1)"))).click();
 			Tools.forceToWait(5);
-			fileUpload("WhatsApp Video 2017-11-30 at 11.27.14.mp4");
+			postVideoByUrl("http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4");
 		}
 	}
 	

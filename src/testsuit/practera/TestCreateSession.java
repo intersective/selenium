@@ -61,11 +61,12 @@ public class TestCreateSession extends TestTemplate {
 				"Job chat",
 				"Job Smart Volunteer activity",
 				"Final Session - Next steps to become more Job Smart" };
+		LocalDate date = LocalDate.now();
+		String today = String.format("%s-%s-%s", date.getYear(), Tools.prependZero(date.getMonthValue()), Tools.prependZero(date.getDayOfMonth()));
 		for (String act : activities) {
-			LocalDate date = LocalDate.now();
-			String today = String.format("%s-%s-%s", date.getYear(), Tools.prependZero(date.getMonthValue()), Tools.prependZero(date.getDayOfMonth()));
 			sw.waitForElements(String.format("div#calendar tbody td[data-date='%s']", today)).get(1).click();
 			
+			Tools.forceToWait(BuildConfig.jsWaitTime);
 			Select activityType = new Select(sw.waitForElement("div.modal[role=dialog] > .modal-dialog select#className"));
 			activityType.selectByVisibleText("Activity Session");
 			

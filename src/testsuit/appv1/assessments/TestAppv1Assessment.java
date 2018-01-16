@@ -99,7 +99,7 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 			} else if (type.contains("video")) {
 				scrollIfNotVisible(q.findElement(Tools.getBy("button:nth-of-type(1)"))).click();
 				Tools.forceToWait(5);
-				fileUpload(answer);
+				postVideoByUrl(answer);
 			}
 		}
 	}
