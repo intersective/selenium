@@ -52,6 +52,7 @@ public class TestCreateEvent extends TestTemplate {
 		sw.waitForElement("div#calendar button.fc-today-button").click();
 		Tools.forceToWait(BuildConfig.jsWaitTime);
 		sw.waitForElements(String.format("div#calendar tbody td[data-date='%s']", today)).get(1).click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		Select activityType = new Select(sw.waitForElement("div.modal[role=dialog] > .modal-dialog select#className"));
 		activityType.selectByIndex(1);
 		Select isOriginalSelect = new Select(sw.waitForElement("select#is_original"));
