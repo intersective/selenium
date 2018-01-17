@@ -136,7 +136,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		} else if (type.contains("video")) {
 			scrollIfNotVisible(q.findElement(Tools.getBy("button:nth-of-type(1)"))).click();
 			Tools.forceToWait(5);
-			postVideoByUrl("http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4");
+			postVideoByUrl("http://mirrors.standaloneinstaller.com/video-sample/P6090053.mp4");
 		}
 	}
 	

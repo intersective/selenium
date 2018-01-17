@@ -1,7 +1,6 @@
 package testsuit;
 
 
-import java.awt.AWTException;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -27,7 +26,6 @@ import service.SeleniumWaiter;
 import service.ShareWebDriver;
 import service.TestLogger;
 import service.Tools;
-import service.UIAction;
 
 import com.google.common.base.Throwables;
 import common.BuildConfig;
@@ -228,20 +226,14 @@ public abstract class TestTemplate implements ITest {
 			Tools.forceToWait(BuildConfig.jsWaitTime);
 		} else {
 			String mainWindowHandle = driver.getWindowHandle();
-			TestLogger.trace(String.format("main window %s", mainWindowHandle));
-			Tools.setContentToSystemClipboard(String.format("%s%s%s", BuildConfig.evidenceFolder, File.separator, filePath));
-			WebElement chooseFile = waitForVisibleWithScroll(".fsp-picker .fsp-content .fsp-select-labels");
-			chooseFile.click();
+			TestLogger.trace(String.format("non headless mode main window %s", mainWindowHandle));
+			
+			sw.waitForElement("#fsp-fileUpload").sendKeys(new String [] { String.format("%s%s%s", BuildConfig.evidenceFolder, File.separator, filePath) });
+			this.waitForFileUploading(3);
 			Tools.forceToWait(BuildConfig.jsWaitTime);
-			try {
-				UIAction.pasteAndEnter();
-				this.waitForFileUploading(3);
-			} catch (AWTException e) {
-				TestLogger.error(Throwables.getStackTraceAsString(e));
-			} finally {
-				driver.switchTo().window(mainWindowHandle);// switch back
-				Tools.forceToWait(BuildConfig.jsWaitTime);
-			}
+			
+			driver.switchTo().window(mainWindowHandle);// switch back
+			Tools.forceToWait(BuildConfig.jsWaitTime);
 		}
 	}
 	

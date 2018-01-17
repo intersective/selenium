@@ -1,7 +1,6 @@
 package testsuit.practera;
 
 
-import java.awt.AWTException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import service.AssignmentDataService;
 import service.PageActionFactory;
 import service.TestLogger;
 import service.Tools;
-import service.UIAction;
 import testsuit.TestTemplate;
 import testsuit.practera.actions.Actions;
 
@@ -79,18 +77,11 @@ public class TestPublishReview extends TestTemplate {
 						TestLogger.error(Throwables.getStackTraceAsString(e));
 					}
 					if (publish != null) {
-						if (BuildConfig.headless) {// automatically accepts the window confirm window since headless mode discards the alert window
-							runJSScript("window.confirm = function(){return true;}");
-							Tools.forceToWait(2);
-						}
+						// automatically accepts the window confirm window since headless mode discards the alert window
+						// also we need no keyboard and mouse action here
+						runJSScript("window.confirm = function(){return true;}");
+						Tools.forceToWait(2);
 						publish.click();
-						if (!BuildConfig.headless) {
-							try {
-								UIAction.hitEnter();// hit enter to confirm the alert window
-							} catch (AWTException e) {
-								e.printStackTrace();
-							}
-						}
 						Tools.forceToWait(3);
 						actions.waitToastMessageDisappear(sw);
 					}
