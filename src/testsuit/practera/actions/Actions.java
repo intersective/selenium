@@ -1,7 +1,6 @@
 package testsuit.practera.actions;
 
 
-import java.awt.AWTException;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
@@ -17,7 +16,6 @@ import service.TestLogger;
 import service.Tools;
 import service.UIAction;
 
-import com.google.common.base.Throwables;
 import common.BuildConfig;
 import common.ElementType;
 
@@ -88,17 +86,13 @@ public class Actions implements PageAction {
 		participantIds[0] = participantId;
 		String fileName = String.format("%s%sdata%s%s", System.getProperty("user.dir"), File.separator, File.separator, enrolmentFile);
 		AssignmentDataService.getInstance().buildStudentEnrolmentCSV(participantIds, fileName);
-		Tools.setContentToSystemClipboard(fileName);
+		// wait the file to write to the disk
+		Tools.forceToWait(2);
 		WebElement uplaodCSV = sw.waitForElement("input#fileupload[name='data[Enrolment][upload]']");
 		Assert.assertNotNull(uplaodCSV);
-		uplaodCSV.click();
-		Tools.forceToWait(2);// wait the file to write to the disk
+		uplaodCSV.sendKeys(new String[] { fileName });
+		Tools.forceToWait(2);
 		
-		try {
-			UIAction.pasteAndEnter();
-		} catch (AWTException e) {
-			TestLogger.error(Throwables.getStackTraceAsString(e));
-		}
 		return studentUserName;
 	}
 	

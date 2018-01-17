@@ -1,7 +1,6 @@
 package testsuit.practera;
 
 
-import java.awt.AWTException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -81,12 +80,8 @@ public class TestCreateEvent extends TestTemplate {
 		sw.waitForElement("div.modal[role=dialog] > .modal-dialog #fend .datetime-calendar").click();
 		WebElement calendarDays = sw.waitForElement("div.modal[role=dialog] > .modal-dialog #fend .bootstrap-datetimepicker-widget .datepicker > .datepicker-days");
 		calendarDays.findElement(Tools.getBy(".today")).click();// select the same day
-		try {
-			UIAction.hitEnter();
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-		Tools.forceToWait(1);
+		
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		Select reminder = new Select(dialog.findElement(Tools.getBy("select#EventAddNotify")));
 		reminder.selectByIndex(0);
 		
