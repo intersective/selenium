@@ -1,7 +1,6 @@
 package testsuit.dashboard.action;
 
 
-import java.awt.AWTException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -11,11 +10,8 @@ import org.testng.Assert;
 
 import service.PageAction;
 import service.SeleniumWaiter;
-import service.TestLogger;
 import service.Tools;
-import service.UIAction;
 
-import com.google.common.base.Throwables;
 import common.ElementType;
 
 
@@ -28,21 +24,15 @@ public class Actions implements PageAction {
 		return Tools.getElementTextContent(points);
 	}
 
-	public WebDriver handelFileUpload(WebDriver driver, SeleniumWaiter sw, String mainWindowHandle) {
+	public WebDriver handleFileUpload(WebDriver driver, SeleniumWaiter sw, String mainWindowHandle) {
 		driver.switchTo().frame("filepicker_dialog");
 		WebElement chooseFile = sw.waitForElement("section.fp__drag-and-drop button");
 		Assert.assertNotNull(chooseFile);
-		chooseFile.click();
 		return driver;
 	}
 	
-	public void selectFile(SeleniumWaiter sw) throws Exception {
-		try {
-			UIAction.pasteAndEnter();
-		} catch (AWTException e) {
-			TestLogger.error(Throwables.getStackTraceAsString(e));
-			throw new Exception(e.getLocalizedMessage());
-		}
+	public void selectFile(SeleniumWaiter sw, String filePath){
+		sw.waitForElement("input[type='file']").sendKeys(new String[] { filePath });
 	}
 	
 }

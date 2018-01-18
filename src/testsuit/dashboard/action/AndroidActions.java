@@ -19,7 +19,7 @@ public class AndroidActions extends MobileActions {
 	}
 
 	@Override
-	public WebDriver handelFileUpload(WebDriver driver, SeleniumWaiter sw,
+	public WebDriver handleFileUpload(WebDriver driver, SeleniumWaiter sw,
 			String mainWindowHandle) {
 		for (String activeHandle : driver.getWindowHandles()) {
 			if (!activeHandle.equals(mainWindowHandle)) {
@@ -32,13 +32,12 @@ public class AndroidActions extends MobileActions {
 	}
 
 	@Override
-	public void selectFile(SeleniumWaiter sw) throws Exception {
+	public void selectFile(SeleniumWaiter sw, String filePath) {
 		try {
 			sw.waitForElement("input[type=file]").sendKeys(new String[] { BuildConfig.androidEvidenceFile });
 			Tools.forceToWait(BuildConfig.jsWaitTime);
 		} catch (Exception e) {
 			TestLogger.error(Throwables.getStackTraceAsString(e));
-			throw new Exception(e.getLocalizedMessage());
 		}
 	}
 

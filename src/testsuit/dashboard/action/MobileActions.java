@@ -17,7 +17,7 @@ public class MobileActions extends Actions {
 	}
 
 	@Override
-	public WebDriver handelFileUpload(WebDriver driver, SeleniumWaiter sw, String mainWindowHandle) {
+	public WebDriver handleFileUpload(WebDriver driver, SeleniumWaiter sw, String mainWindowHandle) {
 		for (String activeHandle : driver.getWindowHandles()) {
 			if (!activeHandle.equals(mainWindowHandle)) {
 				TestLogger.trace(String.format("switch to %s", activeHandle));
@@ -32,8 +32,8 @@ public class MobileActions extends Actions {
 	}
 
 	@Override
-	public void selectFile(SeleniumWaiter sw) throws Exception {
-		super.selectFile(sw);
+	public void selectFile(SeleniumWaiter sw, String filePath) {
+		super.selectFile(sw, filePath);
 	}
 
 }

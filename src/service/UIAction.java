@@ -1,3 +1,7 @@
+/**
+ * should not use the keyboard actions when the test requires to run on the server
+ * it would cause issues when the server can not trigger the keyboard signals
+ */
 package service;
 
 

@@ -119,14 +119,12 @@ public abstract class AssignmentTestTemplate extends TestTemplate {
 			String mainWindowHandle = driver.getWindowHandle();
 			TestLogger.trace(String.format("main window %s", mainWindowHandle));
 			
-			driver = dashboardActions.handelFileUpload(driver, sw, mainWindowHandle);
+			driver = dashboardActions.handleFileUpload(driver, sw, mainWindowHandle);
 			Tools.forceToWait(BuildConfig.jsWaitTime);
 			TestLogger.trace(String.format("window handles %s", Arrays.toString(driver.getWindowHandles().toArray())));
 			
-		    Tools.setContentToSystemClipboard(evidenceFiles[i - 1]);
-		    
 			try {
-				dashboardActions.selectFile(sw);
+				dashboardActions.selectFile(sw, evidenceFiles[i - 1]);
 				this.waitForFileUploading(3);
 			} catch (Exception e) {
 				TestLogger.error(Throwables.getStackTraceAsString(e));
