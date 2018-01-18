@@ -80,15 +80,22 @@ public class AssignmentDataService {
 		ArrayList<T> results = new ArrayList<T>();
 		for (int i = 1 ; i < totalItems; i++) {
 			String tFileName = String.format("%s%sdata%s%s-%s.json", System.getProperty("user.dir"), File.separator, File.separator, fileName, i);
-			Gson actGson = new Gson();
-			try (FileReader reader = new FileReader(tFileName)) {
-				T one = actGson.fromJson(reader, type);
+			try {
+				T one = loadDataFromJsonFile(tFileName, type);
 				results.add(one);
 			} catch (JsonSyntaxException | JsonIOException | IOException e) {
 				e.printStackTrace();
 			}
 		}
 		return results;
+	}
+	
+	public <T> T loadDataFromJsonFile(String fileName, Class<T> type) throws FileNotFoundException, IOException {
+		try (FileReader reader = new FileReader(fileName)) {
+			Gson gson = new Gson();
+			T one = gson.fromJson(reader, type);
+			return one;
+		}
 	}
 	
 	public ArrayList<Questionnaire> loadQuestionnaire(String fileName) {
