@@ -131,4 +131,16 @@ public class Actions implements PageAction {
 		return currentTimelineName;
 	}
 	
+	public WebElement switchProgram(SeleniumWaiter sw, String programName) {
+		sw.waitForElement("#programmenu .dropdown-toggle > i:nth-of-type(2)").click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
+		List<WebElement> programs = sw.waitForListContent("#programmenu .dropdown-menu > .dropdown-content > div:nth-of-type(2) li");
+		for (WebElement p : programs) {
+			if (programName.equals(Tools.getElementTextContent(p).substring(2))) {// we eliminate the starting character 'J'
+				return p;
+			}
+		}
+		return null;
+	}
+	
 }

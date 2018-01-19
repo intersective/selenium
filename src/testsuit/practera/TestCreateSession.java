@@ -38,6 +38,12 @@ public class TestCreateSession extends TestTemplate {
 		actions.waitToastMessageDisappear(sw);
 		Tools.forceToWait(3);
 		
+		if (!"Phase 1 2017 s2".equals(Tools.getElementTextContent(sw.waitForElement("#programmenu .dropdown-toggle > .user-info")))) {
+			actions.switchProgram(sw, "Phase 1 2017 s2").click();
+			Tools.forceToWait(BuildConfig.jsWaitTime);
+			actions.waitToastMessageDisappear(sw);
+		}
+		
 		ShareConfig.currentTimeline = actions.createNewTimeLine(sw);
 		actions.waitToastMessageDisappear(sw);
 		Tools.forceToWait(3);
