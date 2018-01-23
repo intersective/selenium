@@ -31,14 +31,14 @@ public class TestCreateSession extends TestTemplate {
 		actions = (Actions) PageActionFactory.getInstance().build("testsuit.practera.actions.Actions");
 	}
 	
-	@Test(description = "ttest creating a session", groups = "practera_session_create")
+	@Test(description = "test creating a session", groups = "practera_session_create")
 	public void main() {
 		driver.get(BuildConfig.practeraUrl);
 		actions.login(sw, BuildConfig.jobsmartAdmin, BuildConfig.jobsmartAdminPassword);
 		actions.waitToastMessageDisappear(sw);
 		Tools.forceToWait(3);
 		
-		if (!"Phase 1 2017 s2".equals(Tools.getElementTextContent(sw.waitForElement("#programmenu .dropdown-toggle > .user-info")))) {
+		if (!"Phase 1 2017 s2".equals(Tools.getPurifyString(sw.waitForElement("#programmenu .dropdown-toggle > .user-info")))) {
 			actions.switchProgram(sw, "Phase 1 2017 s2").click();
 			Tools.forceToWait(BuildConfig.jsWaitTime);
 			actions.waitToastMessageDisappear(sw);

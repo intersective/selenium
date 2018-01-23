@@ -22,7 +22,7 @@ public class TestJobSmartEnrolment extends TestEnrolment {
 	@Test(description = "test a new student enrolment for Jobsmart", groups = "practera_jobsmart")
 	public void main() {
 		Tools.forceToWait(5);
-		super.enroll("4", "5", "3", ShareConfig.currentTimeline, BuildConfig.jobsmartEnrolmentFile);
+		super.enroll("4", "5", "4", ShareConfig.currentTimeline, BuildConfig.jobsmartEnrolmentFile);
 		
 		BuildConfig.jobsmartStudent = String.format("%s@%s", studentUserName, BuildConfig.testDomain);
 		LocalDataBase.getInstance().addUser(BuildConfig.jobsmartId, BuildConfig.jobsmartStudent, regUrl);

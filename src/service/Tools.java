@@ -6,6 +6,7 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
@@ -116,6 +117,21 @@ public class Tools {
 	
 	public static String getElementTextContentWithSpecialChr(WebElement webElement){
 		return webElement.getAttribute("innerText").replaceAll("\n", "").replaceAll("¡¯", "'").trim();
+	}
+	
+	/**
+	 * eliminate the empty space and new line character from the string
+	 * to make the string only contains single space between the words
+	 * @param webElement
+	 * @return
+	 */
+	public static String getPurifyString(WebElement webElement) {
+		String[] t = webElement.getAttribute("textContent").replaceAll("\n", "").split(" ");
+		ArrayList<String> str = new ArrayList<String>();
+		for (String s : t) {
+			str.add(s.trim());
+		}
+		return String.join(" ", str);
 	}
 	
 	public static void waitForLoadFinished(WebDriver driver) {
