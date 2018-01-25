@@ -68,7 +68,9 @@ public class TestReview extends TestTemplate {
 			do {
 				found = false;
 				List<WebElement> unassigned = sw.waitForListContent("#reviewContainer > div#assessments > div > div#unassigned > div > table > tbody > tr");
-				Assert.assertNotNull(unassigned);
+				if (unassigned == null) {
+					unassigned = new ArrayList<WebElement>();
+				}
 				WebElement popover = null;
 				
 				int index = 0;

@@ -130,7 +130,7 @@ public abstract class AssignmentTestTemplate extends TestTemplate {
 				TestLogger.error(Throwables.getStackTraceAsString(e));
 			} finally {
 				driver.switchTo().window(mainWindowHandle);// switch back
-				Tools.forceToWait(BuildConfig.jsWaitTime);
+				Tools.forceToWait(BuildConfig.pageWaitTime);
 			}
 		}
 		

@@ -13,6 +13,7 @@
 	  		<class name="testsuit.spinner.TestSpinnerLayout" />
 	  		<class name="testsuit.spinner.TestSpinWheel" />
 	  		<class name="testsuit.dashboard.TestDashBoardData" />
+	  		<class name="testsuit.TestLogout" />
 	  	</classes>
 	</test>
 

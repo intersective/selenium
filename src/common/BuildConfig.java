@@ -70,5 +70,8 @@ public class BuildConfig {
 	public static String jobsmartStudent;
 	public static String jobsmartStudentPassword;
 	public static String jobsmartUrl;
+
+	public static String jobsmartMentor;
+	public static String jobsmartMentorPassword;
 	
 }

@@ -61,14 +61,13 @@ public class TestPublishReview extends TestTemplate {
 		
 		for (int i = 1; i < total; i++) {
 			WebElement assessmentElement = sw.waitForElement(String.format(".content-container > div#assessments > .tab-content > #moderated > div> table > tbody > tr:nth-of-type(%s)", i));
-			assessmentElement.findElement(Tools.getBy("td:nth-of-type(5) > a")).click();// ready to publish
-			Tools.forceToWait(1);
+			assessmentElement.findElement(Tools.getBy("td:nth-of-type(5) > a")).click();// ready to publish page
+			Tools.forceToWait(BuildConfig.pageWaitTime);
 			
-			List<WebElement> readytopublish = sw.waitForListContent("#reviewContainer > div#assessments > .tab-content > div#readytopublish > div > table > tbody > tr");
-			Assert.assertNotNull(readytopublish);
-			int ctotal = readytopublish.size() + 1;
-			for (int j = 1; j < ctotal; j++) {
-				String one = String.format(String.format("#reviewContainer > div#assessments > .tab-content > div#readytopublish > div > table > tbody > tr:nth-of-type(%s)", j));
+			int j = 1;
+			int ctotal = getNumberOfReadytopublish();
+			while (j < ctotal) {// we start to deal with each submissions and the list would update after each publish
+				String one = String.format("#reviewContainer > div#assessments > .tab-content > div#readytopublish > div > table > tbody > tr:nth-of-type(%s)", j);
 				if (sw.waitForElement(one) != null && userName.equals(Tools.getElementTextContent(sw.waitForElement(String.format("%s td:nth-of-type(1) > span", one))))) {
 					WebElement publish = null;
 					try {
@@ -78,24 +77,39 @@ public class TestPublishReview extends TestTemplate {
 					}
 					if (publish != null) {
 						// automatically accepts the window confirm window since headless mode discards the alert window
-						// also we need no keyboard and mouse action here
+						// also we need no keyboard and mouse action here when we are running on the server platform, such as windows desktop server
 						runJSScript("window.confirm = function(){return true;}");
-						Tools.forceToWait(2);
+						Tools.forceToWait(BuildConfig.jsWaitTime);
 						publish.click();
 						Tools.forceToWait(3);
+						j = 1;
 						actions.waitToastMessageDisappear(sw);
+						ctotal = getNumberOfReadytopublish();
 					}
+				} else {
+					j++;
 				}
 			}
 			
 			Tools.runJSScript(driver, "window.scrollTo(0, -document.body.scrollHeight);");
-			Tools.forceToWait(2);// implicit wait for no reason
+			Tools.forceToWait(BuildConfig.jsWaitTime);// implicit wait for no reason
 			sw.waitForElement(".page-header span > a").click();
 		}
 		
 		logout();
 	}
 
+	private int getNumberOfReadytopublish() {
+		List<WebElement> readytopublish = sw.waitForListContent("#reviewContainer > div#assessments > .tab-content > div#readytopublish > div > table > tbody > tr");
+		int ctotal;
+		if (readytopublish == null) {
+			ctotal = 1;
+		} else {
+			ctotal = readytopublish.size() + 1;
+		}
+		return ctotal;
+	}
+	
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}

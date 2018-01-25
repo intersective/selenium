@@ -115,6 +115,10 @@ public class Tools {
 		return webElement.getAttribute("innerText").replaceAll("\n", "").trim();
 	}
 	
+	public static String getElementContainText(WebElement webElement) {
+		return webElement.getAttribute("textContent").replaceAll("\n", "").trim();
+	}
+	
 	public static String getElementTextContentWithSpecialChr(WebElement webElement){
 		return webElement.getAttribute("innerText").replaceAll("\n", "").replaceAll("¡¯", "'").trim();
 	}

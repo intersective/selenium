@@ -20,11 +20,11 @@ public class TestJobSmartTimeline extends TestTemplate {
 	@BeforeClass
 	public void setup() {
 		super.setup();
-		setname("test creating a timeline");
+		setname("test creating a timeline for phase 2");
 		actions = (Actions) PageActionFactory.getInstance().build("testsuit.practera.actions.Actions");
 	}
 
-	@Test(description = "test creating a timeline", groups = "practera_timeline_create")
+	@Test(description = "test creating a timeline for phase 2", groups = "practera_timelinep2_create")
 	public void main() {
 		driver.get(BuildConfig.practeraUrl);
 		actions.login(sw, BuildConfig.jobsmartAdmin, BuildConfig.jobsmartAdminPassword);

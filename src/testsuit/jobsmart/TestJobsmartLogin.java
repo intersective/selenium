@@ -1,14 +1,15 @@
 package testsuit.jobsmart;
 
 
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import service.PageActionFactory;
 import service.Tools;
-import service.UIAction;
 import testsuit.TestTemplate;
+import testsuit.jobsmart.assessments.actions.Actions;
+
 import common.BuildConfig;
 import common.ElementType;
 
@@ -17,6 +18,7 @@ public class TestJobsmartLogin extends TestTemplate {
 
 	protected String userName;
 	protected String password;
+	private Actions actions;
 	
 	@BeforeClass
 	public void setup() {
@@ -24,6 +26,7 @@ public class TestJobsmartLogin extends TestTemplate {
 		setname("test job smart login");
 		userName = BuildConfig.jobsmartStudent;
 		password = BuildConfig.jobsmartStudentPassword;
+		actions = (Actions) PageActionFactory.getInstance().build("testsuit.jobsmart.assessments.actions.Actions");
 	}
 	
 	@Test(description = "test a new student login for Job smart", groups = "practera_jobsmart_login")
@@ -31,22 +34,13 @@ public class TestJobsmartLogin extends TestTemplate {
 		driver.get(BuildConfig.jobsmartUrl);	
 		
 		Tools.forceToWait(10);
-		WebElement loginForm = UIAction.waitForElementVisible(sw, "form[name='jobsmart']");
-		Assert.assertNotNull(loginForm);
-		loginForm.findElement(Tools.getBy("input[name=uEmail]")).clear();
-		loginForm.findElement(Tools.getBy("input[name=uEmail]")).sendKeys(new String [] { userName });
-		loginForm.findElement(Tools.getBy("input[name=password]")).clear();
-		loginForm.findElement(Tools.getBy("input[name=password]")).sendKeys(new String [] { userName });
-		loginForm.findElement(Tools.getBy("input[type='submit']")).click();
+		actions.login(sw, userName, userName);
+		
 		Assert.assertNotNull(sw.waitForElement("//*[@class='popup-title'][text()='Invalid Login Details']", ElementType.XPATH));
 		sw.waitForElement(".popup > .popup-buttons > button").click();
 		Tools.forceToWait(BuildConfig.jsWaitTime);
 		
-		loginForm = UIAction.waitForElementVisible(sw, "form[name='jobsmart']");
-		Assert.assertNotNull(loginForm);
-		loginForm.findElement(Tools.getBy("input[name=password]")).clear();
-		loginForm.findElement(Tools.getBy("input[name=password]")).sendKeys(new String [] { password });
-		loginForm.findElement(Tools.getBy("input[type='submit']")).click();
+		actions.login(sw, userName, password);
 		Assert.assertNull(sw.waitForElement("//*[@class='popup-title'][text()='Invalid Login Details']", ElementType.XPATH));
 		
 	}

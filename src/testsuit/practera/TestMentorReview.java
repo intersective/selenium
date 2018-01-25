@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 import service.AssignmentDataService;
 import service.PageActionFactory;
 import service.Tools;
-import service.UIAction;
 import testsuit.TestTemplate;
 import testsuit.practera.actions.Actions;
 
@@ -97,26 +96,50 @@ public class TestMentorReview extends TestTemplate {
 	 * the actual actions for reviewing the assessments
 	 */
 	protected void review() {
+		Tools.forceToWait(BuildConfig.pageWaitTime);
 		Assert.assertNotNull(sw.waitForElement("div#assessment > div.page-header > div > ul.wizard-steps > li:nth-of-type(1).active"));
-		List<WebElement> comments = findElements("div#assessment > div.content-container > div.question > div > div.choice");
-		String finalGrade = Tools.getElementTextContent(comments.get(0).findElement(Tools.getBy(ElementType.TAGNAME, "p"))).contains("more time") ? "5" : "2";
-		WebElement textArea = comments.get(1).findElement(Tools.getBy(ElementType.TAGNAME, "textarea"));
-		Assert.assertNotNull(textArea);
-		textArea.sendKeys(new String[] { "your works are excellent, thank you for submissions" });
-		textArea = comments.get(2).findElement(Tools.getBy(ElementType.TAGNAME, "textarea"));
-		Assert.assertNotNull(textArea);
-		textArea = scrollIfNotVisible(textArea);
-		textArea.sendKeys(new String[] { "your works are excellent, thank you for submissions" });
+		List<WebElement> comments = sw.waitForListContent("div#assessment > div.content-container > div.question > div > div.choice");
+		String finalGrade;
+		WebElement firstAnswer = findElement(comments.get(0),"p");
+		if (firstAnswer == null) {
+			firstAnswer = findElement(comments.get(0),"textArea");
+			if (firstAnswer == null) {
+				finalGrade = "2";
+			} else {
+				finalGrade = Tools.getElementContainText(firstAnswer).contains("more time") ? "5" : "2";
+			}
+		} else {
+			finalGrade = Tools.getElementTextContent(firstAnswer).contains("more time") ? "5" : "2";
+		}
+		
+		WebElement textArea;
+		if (comments.size() > 1) {
+			textArea = comments.get(1).findElement(Tools.getBy(ElementType.TAGNAME, "textarea"));
+			textArea = scrollIfNotVisible(textArea);
+			textArea.sendKeys(new String[] { "your works are excellent, thank you for submissions" });
+		}
+		if (comments.size() > 2) {
+			textArea = comments.get(2).findElement(Tools.getBy(ElementType.TAGNAME, "textarea"));
+			textArea = scrollIfNotVisible(textArea);
+			textArea.sendKeys(new String[] { "your works are excellent, thank you for submissions" });
+		}
 		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 2);
 		processToNext();
 		
-		for (int j = 2; j < 5; j++) {
+		Tools.forceToWait(BuildConfig.pageWaitTime);
+		sw.waitForElement("div#assessment > div.page-header > div > ul.wizard-steps > li:nth-of-type(2).active");
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 2);
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 3);
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 4);
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 5);
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 6);
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 8);
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 10);
+		fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 12);
+		processToNext();
+		
+		for (int j = 3; j < 5; j++) {
 			sw.waitForElement(String.format("div#assessment > div.page-header > div > ul.wizard-steps > li:nth-of-type(%s).active", j));
-			fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 4);
-			fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 6);
-			fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 8);
-			fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 10);
-			fillReviwerQuestion("quite close to the example answer", "thank you for submissions", 12);
 			processToNext();
 		}
 		
@@ -146,8 +169,17 @@ public class TestMentorReview extends TestTemplate {
 	}
 	
 	private void fillReviwerQuestion(String answer, String comment, int questionIndex) {
-		UIAction.waitForElementVisible(sw, String.format("textarea[id='AssessmentReviewAnswer[%s]Answer']", questionIndex)).sendKeys(new String [] { answer });
-		UIAction.waitForElementVisible(sw, String.format("textarea[id='AssessmentReviewAnswer%sComment']", questionIndex)).sendKeys(new String [] { comment });
+		WebElement one = findElement(String.format("textarea[id='AssessmentReviewAnswer[%s]Answer']", questionIndex));
+		if (one != null) {
+			one = scrollIfNotVisible(one);
+			one.sendKeys(new String [] { answer });
+		}
+		
+		WebElement two = findElement(String.format("textarea[id='AssessmentReviewAnswer%sComment']", questionIndex));
+		if (two != null) {
+			two = scrollIfNotVisible(two);
+			two.sendKeys(new String [] { comment });
+		}
 	}
 	
 }

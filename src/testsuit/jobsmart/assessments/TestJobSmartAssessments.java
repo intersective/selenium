@@ -98,7 +98,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		}
 	}
 	
-	private void back() {
+	protected void back() {
 		WebElement backBtn = sw.waitForElement("div[nav-bar='active'] .primary-buttons .back-button");
 		if (backBtn == null) {
 			backBtn = sw.waitForElement("div[nav-bar='active'] .back-button");
@@ -107,7 +107,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		waitForLoadFinished();
 	}
 
-	private void doQuestion(WebElement q) {
+	protected void doQuestion(WebElement q) {
 		String type = q.getAttribute("ng-if");
 		if (type.contains("text")) {
 			scrollIfNotVisible(q.findElement(Tools.getBy("textarea"))).sendKeys(new String[] { "it looks greate" });
