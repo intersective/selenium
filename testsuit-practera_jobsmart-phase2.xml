@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Suite - A New Student for Job Smart phase 1" parallel="none" preserve-order="true">
+<suite name="Suite - A New Student for Job Smart phase 2" parallel="none" preserve-order="true">
 
 	<listeners>
 		<listener class-name="listener.InitJobSmartEnvironmentListener"/>
@@ -10,9 +10,7 @@
 	</listeners>
 
 	<suite-files>
-		<suite-file path="testfile/practera/jobsmart/tests.xml" />
-		<suite-file path="testfile/jobsmart/tests.xml" />
-		<suite-file path="testfile/jobsmart/tests_2.xml" />
+		<suite-file path="testfile/practera/jobsmart/tests_p2.xml" />
 	</suite-files>
 
 </suite>

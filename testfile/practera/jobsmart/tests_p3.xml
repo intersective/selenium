@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Suite - Practera Jobsmart phase 2" parallel="none" preserve-order="true">
+<suite name="Suite - Practera Jobsmart phase 3" parallel="none" preserve-order="true">
 
 	<listeners>
 		<listener class-name="listener.InitJobSmartEnvironmentListener"/>
 	</listeners>
 	
-	<test name="Practera Jobsmart phase 2 test" group-by-instances="true">
+	<test name="Practera Jobsmart test phase 3" group-by-instances="true">
 		<classes>
-			<class name="testsuit.practera.jobsmart.phase2.TestJobSmartTimeline" />
+			<class name="testsuit.practera.jobsmart.phase3.TestJobSmartTimeline" />
 			<class name="testsuit.practera.TestJobSmartEnrolment" />
 			<class name="testsuit.practera.TestJobSmartRegistration" />
 		</classes>
