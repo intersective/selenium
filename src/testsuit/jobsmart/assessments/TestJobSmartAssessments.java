@@ -66,17 +66,8 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 				scrollToElement(oneAct);
 				Tools.forceToWait(1);
 			}
-			if (findElement(oneAct, "i.tick") != null) {
-				TestLogger.trace(String.format("activity %s (%s) done", i, activityName));
-				continue;
-			}
-			List<WebElement> buttons = findElements(oneAct, "button");
-			if (buttons == null || buttons.size() == 0) {
-				TestLogger.trace(String.format("activity %s (%s) not avaible for doing", i, activityName));
-				continue;
-			}
-			if (buttons.get(buttons.size() - 1).getAttribute("class").indexOf("active") > 0) {
-				TestLogger.trace(String.format("activity %s (%s) coming soon", i, activityName));
+			
+			if (filterActivity(oneAct, i)) {
 				continue;
 			}
 			
@@ -91,6 +82,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 				continue;
 			}
 			
+			List<WebElement> buttons = findElements(oneAct, "button");
 			scrollIfNotVisible(buttons.get(buttons.size() - 1)).click();
 			waitForLoadFinished();
 			if (sw.waitForElement("ion-view[nav-view='active'][state='app.assessment']") == null) {
@@ -99,17 +91,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 				continue;
 			}
 			
-			List<WebElement> questions = sw.waitForListContent("div[ng-repeat='question in group.questions']");
-			ArrayList<Question> questionsData = assessment.getQuestions();
-			int dataIndex = 0;
-			for (WebElement q : questions) {
-				if (!q.isDisplayed()) {
-					scrollToElement(q);
-				}
-				doQuestion(q.findElement(Tools.getBy("div")), questionsData.get(dataIndex).getAnswer());
-				Tools.forceToWait(1);
-				dataIndex++;
-			}
+			doAssessment(assessment);
 			int points = clickAfterFinishAssessment();
 			TestLogger.trace(String.format("gained point %s", points));
 			int incrementedPoints = Integer.parseInt(sw.waitForElement("#fillgaugeScore > g > g > text").getAttribute("textContent").trim());
@@ -119,6 +101,46 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 			waitForLoadFinished();
 			back();// after finished an activity, the page will stay at the activity detail, so we need to go back
 			Tools.forceToWait(2);
+		}
+	}
+	
+	protected boolean filterActivity(WebElement oneAct, int i) {
+		if (findElement(oneAct, "i.tick") != null) {
+			TestLogger.trace(String.format("activity %s done", i));
+			return true;
+		}
+		List<WebElement> buttons = findElements(oneAct, "button");
+		if (buttons == null || buttons.size() == 0) {
+			TestLogger.trace(String.format("activity %s not avaible for doing", i));
+			return true;
+		}
+		if (buttons.get(buttons.size() - 1).getAttribute("class").indexOf("active") > 0) {
+			TestLogger.trace(String.format("activity %s coming soon", i));
+			return true;
+		}
+		if (Tools.getElementTextContent(buttons.get(buttons.size() - 1)).equals("Reviewing")) {
+			TestLogger.trace(String.format("activity %s is Reviewing", i));
+			return true;
+		}
+		
+		if (Tools.getElementTextContent(buttons.get(buttons.size() - 1)).equals("Feedback")) {
+			TestLogger.trace(String.format("we gave a Feedback for activity %s", i));
+			return true;
+		}
+		return false;
+	}
+	
+	protected void doAssessment(JobSmartAssessment assessment) {
+		List<WebElement> questions = sw.waitForListContent("div[ng-repeat='question in group.questions']");
+		ArrayList<Question> questionsData = assessment.getQuestions();
+		int dataIndex = 0;
+		for (WebElement q : questions) {
+			if (!q.isDisplayed()) {
+				scrollToElement(q);
+			}
+			doQuestion(q.findElement(Tools.getBy("div")), questionsData.get(dataIndex).getAnswer());
+			Tools.forceToWait(1);
+			dataIndex++;
 		}
 	}
 	

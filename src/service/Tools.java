@@ -152,6 +152,10 @@ public class Tools {
 		return null;
 	}
 	
+	public static void disableConfirmWindow(WebDriver driver) {
+		runJSScript(driver, "window.confirm = function(){return true;}");
+	}
+	
 	public static void setContentToSystemClipboard(String content) {
 		StringSelection s = new StringSelection(content);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, null);

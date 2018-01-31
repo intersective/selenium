@@ -58,32 +58,15 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 	private void doQuestionWithAssessment(JobSmartAssessment assessment) {
 		List<WebElement> activities = sw.waitForListContent(".activities > div > div[parent='app']");
 		int total = activities.size() + 2;
-		for (int i = 2; i < total; i++) {
+		boolean found = false;
+		for (int i = 2; i < total && !found; i++) {
 			WebElement oneAct = sw.waitForElement(String.format(".activities > div > div[parent='app']:nth-of-type(%s)", i));
 			if (!oneAct.isDisplayed()) {
 				scrollToElement(oneAct);
 				Tools.forceToWait(1);
 			}
-			if (findElement(oneAct, "i.tick") != null) {
-				TestLogger.trace(String.format("activity %s done", i));
-				continue;
-			}
-			List<WebElement> buttons = findElements(oneAct, "button");
-			if (buttons == null || buttons.size() == 0) {
-				TestLogger.trace(String.format("activity %s not avaible for doing", i));
-				continue;
-			}
-			if (buttons.get(buttons.size() - 1).getAttribute("class").indexOf("active") > 0) {
-				TestLogger.trace(String.format("activity %s coming soon", i));
-				continue;
-			}
-			if (Tools.getElementTextContent(buttons.get(buttons.size() - 1)).equals("Reviewing")) {
-				TestLogger.trace(String.format("activity %s is Reviewing", i));
-				continue;
-			}
 			
-			if (Tools.getElementTextContent(buttons.get(buttons.size() - 1)).equals("Feedback")) {
-				TestLogger.trace(String.format("we gave a Feedback for activity %s", i));
+			if (filterActivity(oneAct, i)) {
 				continue;
 			}
 			
@@ -93,6 +76,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 				continue;
 			}
 			
+			List<WebElement> buttons = findElements(oneAct, "button");
 			scrollIfNotVisible(buttons.get(buttons.size() - 1)).click();
 			waitForLoadFinished();
 			if (sw.waitForElement("ion-view[nav-view='active'][state='app.assessment']") == null) {
@@ -100,24 +84,19 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 				back();
 				continue;
 			}
-			
-			List<WebElement> questions = sw.waitForListContent("div[ng-repeat='question in group.questions']");
-			int dataIndex = 0;
-			for (WebElement q : questions) {
-				if (!q.isDisplayed()) {
-					scrollToElement(q);
-				}
-				doQuestion(q.findElement(Tools.getBy("div")), assessment.getQuestions().get(dataIndex).getAnswer());
-				dataIndex++;
-				Tools.forceToWait(1);
-			}
-			clickAfterFinishAssessment();
-			sw.waitForElement(".tab-nav > a:nth-of-type(2)").click();
-			waitForLoadFinished();
-			back();// after finished an activity, the page will stay at the activity detail, so we go back to the activity list page
-			Tools.forceToWait(2);
-			break;
+			found = true;
 		}
+		if (!found) {
+			TestLogger.trace(String.format("we can not find (%s)", assessment.getName()));
+			return;
+		}
+		
+		doAssessment(assessment);
+		clickAfterFinishAssessment();
+		sw.waitForElement(".tab-nav > a:nth-of-type(2)").click();
+		waitForLoadFinished();
+		back();// after finished an activity, the page will stay at the activity detail, so we go back to the activity list page
+		Tools.forceToWait(2);
 	}
 	
 	private void assignSubmissionToReviewer(JobSmartAssessment assessment, String studentName) {
@@ -202,7 +181,9 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 		}
 		
 		for (MileStone mileStone : workflows) {
-			login();
+			driver.get(BuildConfig.jobsmartUrl);	
+			Tools.forceToWait(10);
+			actions.login(sw, BuildConfig.jobsmartStudent, BuildConfig.jobsmartStudentPassword);
 			
 			waitForLoadFinished();
 			sw.waitForElement("//div[@nav-bar='active']/ion-header-bar/div[text()='My Score']", ElementType.XPATH);
@@ -240,7 +221,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 					}
 				}
 				
-				sideBar = practeraActions.getSidebar(sw);// since we will go to the assessment centre page, we must use the side bar to get to th assessment page
+				sideBar = practeraActions.getSidebar(sw);// since we will go to the assessment centre page, we must use the side bar to get to the assessment page
 				project = sideBar.findElement(Tools.getBy("ul.nav li:nth-of-type(2)"));
 				project.findElement(Tools.getBy(ElementType.TAGNAME, "a")).click();
 				Tools.forceToWait(BuildConfig.jsWaitTime);
@@ -253,7 +234,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 				if (readyToPublish != null && readyToPublish.size() > 0) {
 					for (WebElement one: readyToPublish) {
 						if (studentName.equals(Tools.getElementTextContent(one.findElement(Tools.getBy("td:nth-of-type(1) > span"))))) {
-							runJSScript("window.confirm = function(){return true;}");
+							Tools.disableConfirmWindow(driver);
 							Tools.forceToWait(BuildConfig.jsWaitTime);
 							one.findElement(Tools.getBy("td:nth-of-type(5) > span:nth-of-type(2) > a:nth-of-type(1)")).click();
 							practeraActions.waitToastMessageDisappear(sw);
@@ -266,11 +247,4 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 		}
 	}
 		
-
-	private void login() {
-		driver.get(BuildConfig.jobsmartUrl);	
-		Tools.forceToWait(10);
-		actions.login(sw, BuildConfig.jobsmartStudent, BuildConfig.jobsmartStudentPassword);
-	}
-
 }

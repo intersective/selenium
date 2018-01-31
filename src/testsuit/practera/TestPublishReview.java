@@ -78,7 +78,7 @@ public class TestPublishReview extends TestTemplate {
 					if (publish != null) {
 						// automatically accepts the window confirm window since headless mode discards the alert window
 						// also we need no keyboard and mouse action here when we are running on the server platform, such as windows desktop server
-						runJSScript("window.confirm = function(){return true;}");
+						Tools.disableConfirmWindow(driver);
 						Tools.forceToWait(BuildConfig.jsWaitTime);
 						publish.click();
 						Tools.forceToWait(3);
