@@ -31,7 +31,7 @@ public class TestAppv1AssessmentModeratedStatus extends TestAppv1AssessmentModer
 		waitForLoadFinished();
 		Tools.forceToWait(2);
 		
-		List<WebElement> mileStones = sw.waitForListContent(".jsmbp-card-box");
+		List<WebElement> mileStones = sw.waitForListContent(".view-container[nav-view='active'] .card");
 		Assert.assertNotNull(mileStones);
 		Tools.forceToWait(2);
 		mileStones.get(0).click();

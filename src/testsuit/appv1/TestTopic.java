@@ -37,25 +37,28 @@ public class TestTopic extends Appv1TestTemplate {
 	@Test(description = "test topics for App v1", groups = "practera_appv1_assessment_topics")
 	public void main() {
 		MileStone mileStone = AssignmentDataService.getInstance().loadListDataFromJsonFiles("appv1_mileStones", 2, MileStone.class).get(0);
-		WebElement currentAct = sw.waitForElement("//*[text()='Current Activity']/following-sibling::div", ElementType.XPATH);
+		WebElement currentAct = sw.waitForElement("//*[text()='Things to do']/following-sibling::div", ElementType.XPATH);
 		Assert.assertNotNull(currentAct);
-		Assert.assertEquals(Tools.getElementTextContent(currentAct.findElement(Tools.getBy("p"))), mileStone.getName());
-		Assert.assertEquals(Tools.getElementTextContent(currentAct.findElement(Tools.getBy(".card-time-point > span"))), mileStone.getStatus());
+		Assert.assertEquals(Tools.getElementTextContent(findElement(currentAct, ".title")), mileStone.getName());
+		Assert.assertEquals(Tools.getElementTextContent(findElement(currentAct, "h3")), mileStone.getStatus());
 		
 		findElement(".tab-nav > a:nth-of-type(2)").click();// a button can only click once in this app, so that we do this in the login test case
-		waitForLoadFinished();
+		waitForLoadFinished();//we go to the activities page
 		Tools.forceToWait(2);
 		
-		List<WebElement> mileStones = sw.waitForListContent(".jsmbp-card-box");
+		List<WebElement> mileStones = sw.waitForListContent(".view-container[nav-view='active'] .card");
 		Assert.assertNotNull(mileStones);
 		Tools.forceToWait(2);
-		Assert.assertEquals(Tools.getElementTextContent(mileStones.get(1).findElement(Tools.getBy(".card-time-point"))), "- Locked - tap for details");
+		Assert.assertNull(findElement(mileStones.get(1),"h3"));// would not have the test if it is locked
 		mileStones.get(0).click();
 		Tools.forceToWait(BuildConfig.jsWaitTime);
 		
 		checkTopics();
 	}
 	
+	/**
+	 * the topics always sit on the front of the activity content list
+	 */
 	protected void checkTopics() {
 		Tools.forceToWait(5);
 		List<WebElement> assessments = sw.waitForListContent(".jsmbp-detail-items > div");
@@ -64,17 +67,15 @@ public class TestTopic extends Appv1TestTemplate {
 		int i = 0;
 		ArrayList<Topic> topcis = t.getTopics();
 		for (Topic tp : topcis) {
-			WebElement assessmentHeader = assessments.get(i).findElement(Tools.getBy(".item-content"));
-			Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy("h3"))), tp.getTitle());
-			Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy("p"))), "Topic");
-			Assert.assertEquals(Tools.getElementTextContent(assessments.get(i).findElement(
-					Tools.getBy(".item-btns > button"))).toLowerCase(), "view");
+			WebElement assessmentHeader = findElement(assessments.get(i), ".item");
+			Assert.assertEquals(Tools.getElementTextContent(findElement(assessmentHeader,"detail-title h2")), tp.getTitle());
+			Assert.assertEquals(Tools.getElementTextContent(findElement(assessmentHeader, "detail-title p")), "TOPIC");
 			assessments.get(i).click();
 			
 			waitForLoadFinished();
-			sw.waitForElement(".activities");
-			Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".activities h3")), tp.getTitle());
-			Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".activities p")), tp.getDescription());
+			sw.waitForElement(".pane[nav-view='active'] .activities");
+			Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".pane[nav-view='active'] .activities h3")), tp.getTitle());
+			Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".pane[nav-view='active'] .activities .item-body")), tp.getDescription());
 			sw.waitForElement(".nav-bar-block[nav-bar=active] .back-button").click();
 			Tools.forceToWait(2);
 			i++;

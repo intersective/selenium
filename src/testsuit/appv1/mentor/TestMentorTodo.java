@@ -30,14 +30,14 @@ public class TestMentorTodo extends Appv1TestTemplate {
 		Tools.forceToWait(2);
 		
 		MileStone mileStone = AssignmentDataService.getInstance().loadListDataFromJsonFiles("appv1_mileStones", 2, MileStone.class).get(1);
-		WebElement currentAct = sw.waitForElement("//*[text()='Current Activity']/following-sibling::div", ElementType.XPATH);
+		WebElement currentAct = sw.waitForElement("//*[text()='Things to do']/following-sibling::div", ElementType.XPATH);
 		Assert.assertNotNull(currentAct);
-		Assert.assertEquals(Tools.getElementTextContent(currentAct.findElement(Tools.getBy("p"))), mileStone.getName());
+		Assert.assertEquals(Tools.getElementTextContent(findElement(currentAct, ".title")), mileStone.getName());
 		
-		List<WebElement> mileStones = sw.waitForListContent(".jsmbp-card-box");
+		List<WebElement> mileStones = sw.waitForListContent(".view-container[nav-view='active'] .card");
 		Assert.assertNotNull(mileStones);
 		Tools.forceToWait(2);
-		Assert.assertEquals(Tools.getElementTextContent(mileStones.get(mileStones.size() - 1).findElement(Tools.getBy(".card-time-point"))), "- Unlocked! - tap for details");
+		Assert.assertEquals(Tools.getElementTextContent(mileStones.get(mileStones.size() - 1).findElement(Tools.getBy("h3"))), "UNLOCKED");
 		
 		Tools.forceToWait(2);
 	}

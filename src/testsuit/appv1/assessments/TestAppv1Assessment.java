@@ -1,11 +1,14 @@
 package testsuit.appv1.assessments;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import model.Assessment;
 import model.Question;
 import model.Questionnaire;
+import model.Topics;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -14,7 +17,6 @@ import org.testng.annotations.BeforeClass;
 import service.AssignmentDataService;
 import service.Tools;
 import testsuit.Appv1TestTemplate;
-
 import common.BuildConfig;
 import common.ElementType;
 
@@ -24,34 +26,41 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 	private Questionnaire questionare;
 	private int assessmentLocation;
 	protected boolean doFileQuestions = true;
+	protected int numberOfTopics;
 	
 	@BeforeClass
 	public void setup() {
 		super.setup();
 		questionare = AssignmentDataService.getInstance().loadListDataFromJsonFiles("assessments_appv1student", 1, Questionnaire.class).get(0);
+		try {
+			numberOfTopics = AssignmentDataService.getInstance().loadDataFromJsonFile(
+							String.format("%s%sdata%s%s.json", System.getProperty("user.dir"), File.separator, File.separator, "topics_appv1student-1"), Topics.class)
+					.getTopics().size();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void main() {
 		List<WebElement> assessments = sw.waitForListContent(".jsmbp-detail-items > div");
 		Assert.assertNotNull(assessments);
-		Assert.assertEquals(assessments.size() - 1, questionare.getNumberOfAssessments());// Exclude the topic
+		Assert.assertEquals(assessments.size() - numberOfTopics, questionare.getNumberOfAssessments());// Exclude the topic
 		
-		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".jsmbp-detail-container > div > .item > p:nth-of-type(1)")), questionare.getName());
-		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".jsmbp-detail-container > div > .item > p:nth-of-type(2)")), questionare.getDescription());
+		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".jsmbp-detail-container > div > .item > h1")), questionare.getName());
+		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".jsmbp-detail-container > div > .item > p")), questionare.getDescription());
 		
 		Assessment assessment = questionare.getAssessment(assessmentLocation);
-		WebElement assessmentHeader = assessments.get(assessmentLocation + 1).findElement(Tools.getBy(".item-content"));
-		Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy("h3"))), assessment.getName());
-		Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy("p"))), "Assessment");
-		Assert.assertEquals(Tools.getElementTextContent(assessments.get(assessmentLocation + 1).findElement(
-								Tools.getBy(".item-btns > button"))).toLowerCase(), "do now");
-		assessments.get(assessmentLocation + 1).click();
+		WebElement assessmemtElement = scrollIfNotVisible(assessments.get(assessmentLocation + numberOfTopics));
+		WebElement assessmentHeader = assessmemtElement.findElement(Tools.getBy(".item > detail-title"));
+		Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy(".title"))), assessment.getName());
+		Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy("p"))), "ASSESSMENT");
+		assessmemtElement.click();
 		
 		waitForLoadFinished();
-		sw.waitForElement(".activities");
-		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement("div[ng-if='assessment.name'] > h2")), assessment.getName());
-		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement("div[ng-if='assessment.description']")), assessment.getDescription());
+		sw.waitForElement(".pane[nav-view='active'] .activities");
+		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".pane[nav-view='active'] .activities div[ng-if='assessment.name'] > h1")), assessment.getName());
+		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".pane[nav-view='active'] .activities div[ng-if='assessment.description']")), assessment.getDescription());
 		
 		List<WebElement> questions = sw.waitForListContent("div[ng-repeat='question in group.questions']");
 		int i = 0;
@@ -121,14 +130,11 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 			Tools.forceToWait(2);
 			findElement(".popup> .popup-buttons > button").click();
 			Tools.forceToWait(2);
-			Assert.assertNotNull(sw.waitForElement("//*[@class='congrate-header'][text()='Submission Successful']", ElementType.XPATH, 60));
+			Assert.assertNotNull(sw.waitForElement("//*[contains(concat(' ', @class, ' '), 'congrate-header')][text()='Submission Successful']", ElementType.XPATH, 60));
 			sw.waitForElement(".modal button").click();
-			Tools.forceToWait(BuildConfig.jsWaitTime);
-			
-			Assert.assertEquals(Tools.getElementTextContent(
-					sw.waitForElement(String.format(".jsmbp-detail-items > div:nth-of-type(%s) .item-btns > button", assessmentLocation + 2))).toLowerCase(), "view");
+			Tools.forceToWait(BuildConfig.pageWaitTime);
 		} catch (Error e) {
-			findElement(".popup> .popup-buttons > button").click();// a window pops up only if there is a submission error
+			findElement(".popup> .popup-buttons > button").click();// a single window pops up only if there is a submission error
 			throw new AssertionError(e);
 		}
 	}

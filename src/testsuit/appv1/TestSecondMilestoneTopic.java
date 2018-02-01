@@ -22,10 +22,10 @@ public class TestSecondMilestoneTopic extends TestTopic {
 
 	@Test(description = "test second milestone topic for App v1", groups = "practera_appv1_assessment_second_milestone_topics")
 	public void main() {
-		List<WebElement> mileStones = sw.waitForListContent(".jsmbp-card-box");
+		List<WebElement> mileStones = sw.waitForListContent(".view-container[nav-view='active'] .card");
 		Assert.assertNotNull(mileStones);
 		Tools.forceToWait(2);
-		Assert.assertEquals(Tools.getElementTextContent(mileStones.get(1).findElement(Tools.getBy(".card-time-point"))), "- Unlocked! - tap for details");
+		Assert.assertEquals(Tools.getElementTextContent(findElement(mileStones.get(1),"h3")), "UNLOCKED");
 		mileStones.get(1).click();
 		Tools.forceToWait(2);
 		

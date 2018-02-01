@@ -37,10 +37,10 @@ public class TestAppv1AssessmentModerated extends TestAppv1Assessment {
 		Tools.forceToWait(2);
 		
 		MileStone mileStone = AssignmentDataService.getInstance().loadListDataFromJsonFiles("appv1_mileStones", 2, MileStone.class).get(1);
-		WebElement currentAct = sw.waitForElement("//*[text()='Current Activity']/following-sibling::div", ElementType.XPATH);
+		WebElement currentAct = sw.waitForElement("//*[text()='Things to do']/following-sibling::div", ElementType.XPATH);
 		Assert.assertNotNull(currentAct);
-		Assert.assertEquals(Tools.getElementTextContent(currentAct.findElement(Tools.getBy("p"))), mileStone.getName());
-		Assert.assertEquals(Tools.getElementTextContent(currentAct.findElement(Tools.getBy(".card-time-point > span"))),mileStone.getStatus());
+		Assert.assertEquals(Tools.getElementTextContent(findElement(currentAct, ".title")), mileStone.getName());
+		Assert.assertEquals(Tools.getElementTextContent(findElement(currentAct, "h3")), mileStone.getStatus());
 		
 		findElement(".tab-nav > a:nth-of-type(2)").click();
 		waitForLoadFinished();
@@ -50,7 +50,7 @@ public class TestAppv1AssessmentModerated extends TestAppv1Assessment {
 	@Override
 	protected void checkStatus() {
 		String status = Tools.getElementTextContent(sw.waitForElement(String
-				.format(".jsmbp-detail-items > div:nth-of-type(%s) > .item p[ng-if=status]", getAssessmentLocation() + 2))).toLowerCase();
+				.format(".jsmbp-detail-items > div:nth-of-type(%s) > .item > detail-title p[ng-if=status]", getAssessmentLocation() + numberOfTopics + 1))).toLowerCase();
 		Assert.assertEquals(status, AssessmentStatus.PENDINGREVIEW.getText());
 	}
 	
