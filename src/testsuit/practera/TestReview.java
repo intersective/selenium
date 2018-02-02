@@ -51,6 +51,7 @@ public class TestReview extends TestTemplate {
 		WebElement sideBar = actions.getSidebar(sw);
 		WebElement project = sideBar.findElement(Tools.getBy("ul.nav li:nth-of-type(2)"));
 		project.findElement(Tools.getBy(ElementType.TAGNAME, "a")).click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		project.findElement(Tools.getBy("ul.submenu li:nth-of-type(3)")).click();
 		
 		List<WebElement> assessmentsElements = sw.waitForListContent(".content-container > div#assessments > .tab-content > #moderated > div> table > tbody > tr");

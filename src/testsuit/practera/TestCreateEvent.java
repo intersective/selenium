@@ -41,6 +41,7 @@ public class TestCreateEvent extends TestTemplate {
 		WebElement sideBar = actions.getSidebar(sw);
 		WebElement project = sideBar.findElement(Tools.getBy("ul.nav li.hsub:nth-of-type(2)"));
 		project.findElement(Tools.getBy(ElementType.TAGNAME, "a")).click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		project.findElement(Tools.getBy("ul.submenu li:nth-of-type(1)")).click();
 		
 		List<WebElement> projects = sw.waitForListContent("table#tblTimeline tbody tr");

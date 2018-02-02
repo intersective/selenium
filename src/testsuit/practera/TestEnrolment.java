@@ -88,6 +88,7 @@ public class TestEnrolment extends TestTemplate {
 		WebElement sideBar = actions.getSidebar(sw);
 		WebElement parti = sideBar.findElement(Tools.getBy(String.format("ul.nav li.hsub:nth-of-type(%s)", partiLocation)));
 		parti.findElement(Tools.getBy(ElementType.TAGNAME, "a")).click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		parti.findElement(Tools.getBy("ul.submenu li:nth-of-type(1)")).click();
 		
 		actions.enterToEnrollmentPage(sw, driver);

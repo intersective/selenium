@@ -50,6 +50,7 @@ public class TestMentorReview extends TestTemplate {
 		WebElement sideBar = actions.getSidebar(sw);
 		WebElement myReview = sideBar.findElement(Tools.getBy("ul.nav li:nth-of-type(4)"));
 		myReview.findElement(Tools.getBy(ElementType.TAGNAME, "a")).click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		sw.waitForElement("ul.nav li:nth-of-type(4) > ul > li > a").click();
 		
 		int i = 2;// always starts from the second row which is the actual data because the first row only contains the headers

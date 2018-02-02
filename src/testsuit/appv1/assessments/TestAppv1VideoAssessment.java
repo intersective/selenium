@@ -28,7 +28,7 @@ public class TestAppv1VideoAssessment extends TestAppv1Assessment {
 	@Override
 	protected void checkStatus() {
 		String status = Tools.getElementTextContent(sw.waitForElement(String
-				.format(".jsmbp-detail-items > div:nth-of-type(%s) > .item p[ng-if=status]", getAssessmentLocation() + 2))).toLowerCase();
+				.format(".jsmbp-detail-items > div:nth-of-type(%s) > .item p[ng-if=status]", getAssessmentLocation() + numberOfTopics + 1))).toLowerCase();
 		Assert.assertEquals(status, AssessmentStatus.DONE.getText());
 	}
 	
