@@ -12,6 +12,7 @@
 			<class name="testsuit.practera.jobsmart.phase2.TestJobSmartTimeline" />
 			<class name="testsuit.practera.TestJobSmartEnrolment" />
 			<class name="testsuit.practera.TestJobSmartRegistration" />
+			<class name="testsuit.practera.TestAddTeam" />
 		</classes>
 	</test>
 
