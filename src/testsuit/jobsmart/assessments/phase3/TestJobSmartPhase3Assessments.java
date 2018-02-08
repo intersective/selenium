@@ -26,6 +26,7 @@ import testsuit.jobsmart.assessments.actions.Actions;
 
 import common.BuildConfig;
 import common.ElementType;
+import common.ShareConfig;
 
 
 public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
@@ -169,7 +170,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 		ArrayList<MileStone> workflows = new ArrayList<MileStone>();
 		try {
 			Workflow workflow = AssignmentDataService.getInstance().loadDataFromJsonFile(String.format("%s%sdata%sjobsmart%sphase3%s%s.json",
-					System.getProperty("user.dir"), File.separator, File.separator, File.separator, File.separator, "item-1"), Workflow.class);
+					System.getProperty("user.dir"), File.separator, File.separator, File.separator, File.separator, ShareConfig.jobsmartWorkflow), Workflow.class);
 			ArrayList<String> sequences = workflow.getSequences();
 			for (String s : sequences) {
 				workflows.add(AssignmentDataService.getInstance().loadDataFromJsonFile(

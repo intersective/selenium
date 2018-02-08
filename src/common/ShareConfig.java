@@ -12,4 +12,6 @@ public class ShareConfig {
 	
 	public static String currentTimeline;
 	
+	public static String jobsmartWorkflow;
+	
 }
