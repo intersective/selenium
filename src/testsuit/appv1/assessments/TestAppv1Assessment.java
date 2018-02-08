@@ -27,6 +27,7 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 	private int assessmentLocation;
 	protected boolean doFileQuestions = true;
 	protected int numberOfTopics;
+	protected String assessmentStatusLocator = ".jsmbp-detail-items > div:nth-of-type(%s) > .item > detail-title p[ng-if='seq.asmtStatus']";
 	
 	@BeforeClass
 	public void setup() {

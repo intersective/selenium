@@ -43,7 +43,7 @@ public class TestAppv1AssessmentModeratedStatus extends TestAppv1AssessmentModer
 	@Override
 	protected void checkStatus() {
 		String status = Tools.getElementTextContent(sw.waitForElement(String
-				.format(".jsmbp-detail-items > div:nth-of-type(%s) > .item p[ng-if=status]", getAssessmentLocation() + numberOfTopics + 1))).toLowerCase();
+				.format(assessmentStatusLocator, getAssessmentLocation() + numberOfTopics + 1))).toLowerCase();
 		Assert.assertEquals(status, estatus);
 	}
 
