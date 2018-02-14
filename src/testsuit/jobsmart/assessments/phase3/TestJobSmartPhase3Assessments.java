@@ -21,6 +21,7 @@ import service.AssignmentDataService;
 import service.PageActionFactory;
 import service.TestLogger;
 import service.Tools;
+import service.UIAction;
 import testsuit.jobsmart.assessments.TestJobSmartAssessments;
 import testsuit.jobsmart.assessments.actions.Actions;
 
@@ -213,7 +214,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 				if (reviewinprogress != null && reviewinprogress.size() > 0) {
 					int reviewTotal = reviewinprogress.size() + 1;
 					for (int i = 1; i < reviewTotal; i++) {
-						WebElement one = sw.waitForElement(String.format("#assessments #reviewinprogress table > tbody > tr:nth-of-type(%s)", i));
+						WebElement one = UIAction.waitForElementVisible(sw, String.format("#assessments #reviewinprogress table > tbody > tr:nth-of-type(%s)", i));
 						if (studentName.equals(Tools.getElementTextContent(findElement(one,"td > span")))){
 							findElement(one, "td:nth-of-type(3) > span > a:nth-of-type(2)").click();
 							review(assessment);
@@ -222,7 +223,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 					}
 				}
 				
-				sideBar = practeraActions.getSidebar(sw);// since we will go to the assessment centre page, we must use the side bar to get to the assessment page
+				sideBar = practeraActions.getSidebar(sw);// since we will go to the assessment center page, we must use the side bar to get to the assessment page
 				project = sideBar.findElement(Tools.getBy("ul.nav li:nth-of-type(2)"));
 				project.findElement(Tools.getBy(ElementType.TAGNAME, "a")).click();
 				Tools.forceToWait(BuildConfig.jsWaitTime);
@@ -233,7 +234,10 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 				sw.waitForElement("#reviewContainer > div#assessments > ul#reviewTab > li:nth-of-type(4)");
 				List<WebElement> readyToPublish = sw.waitForListContent("#reviewContainer > div#assessments > div > div#readytopublish > div > table > tbody > tr");
 				if (readyToPublish != null && readyToPublish.size() > 0) {
-					for (WebElement one: readyToPublish) {
+					int total = readyToPublish.size() + 1;
+					for (int i = 1; i < total; i++) {
+						WebElement one = UIAction.waitForElementVisible(sw,
+										String.format("#reviewContainer > div#assessments > div > div#readytopublish > div > table > tbody > tr:nth-of-type(%s)",i));
 						if (studentName.equals(Tools.getElementTextContent(one.findElement(Tools.getBy("td:nth-of-type(1) > span"))))) {
 							Tools.disableConfirmWindow(driver);
 							Tools.forceToWait(BuildConfig.jsWaitTime);
