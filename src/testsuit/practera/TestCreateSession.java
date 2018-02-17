@@ -49,15 +49,24 @@ public class TestCreateSession extends TestTemplate {
 		Tools.forceToWait(3);
 		
 		WebElement calendarBtn = null;
-		List<WebElement> timelines = sw.waitForListContent("#tblTimeline > tbody > tr");
-		for (WebElement t : timelines) {
-			scrollIfNotVisible(t);
-			String title = Tools.getElementTextContent(t.findElement(Tools.getBy("td:nth-of-type(1)")));
-			if (ShareConfig.currentTimeline.equals(title)) {
-				calendarBtn = findElement(t, ".td-actions > div > a[data-original-title='Calendar'] i");
-				break;
+		boolean continued = true;
+		do {
+			List<WebElement> timelines = sw.waitForListContent("#tblTimeline > tbody > tr");
+			WebElement nextPageBtn = sw.waitForElement("#cohorts .dataTables_paginate > .pagination > .next");
+			for (WebElement t : timelines) {
+				scrollIfNotVisible(t);
+				String title = Tools.getElementTextContent(t.findElement(Tools.getBy("td:nth-of-type(1)")));
+				if (ShareConfig.currentTimeline.equals(title)) {
+					calendarBtn = findElement(t, ".td-actions > div > a[data-original-title='Calendar'] i");
+					break;
+				}
 			}
-		}
+			continued = calendarBtn == null && !nextPageBtn.getAttribute("class").contains("disabled");
+			if (continued) {
+				findElement(scrollIfNotVisible(nextPageBtn), "a").click();
+				Tools.forceToWait(BuildConfig.jsWaitTime);
+			}
+		} while (continued);
 		Assert.assertNotNull(calendarBtn);
 		calendarBtn.click();
 		Tools.forceToWait(5);
