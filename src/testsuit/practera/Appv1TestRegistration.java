@@ -41,6 +41,7 @@ public class Appv1TestRegistration extends TestMailtrap {
 		actions.logout(sw);
 		
 		driver.get(turl);
+		Tools.forceToWait(5);
 		WebElement itemCheckBox = waitForVisibleWithScroll(".item-checkbox");
 		itemCheckBox.click();
 		

@@ -42,6 +42,7 @@ public class TestEnrolment extends TestTemplate {
 		enroll("5", "6", "3", "Timeline", BuildConfig.enrolmentFile);
 		
 		driver.get(regUrl);
+		Tools.forceToWait(7);
 		
 		WebElement agreeCheckBox = sw.waitForElement("ion-checkbox[value=Agree]");
 		Assert.assertNotNull(agreeCheckBox);
