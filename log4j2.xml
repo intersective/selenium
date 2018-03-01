@@ -5,6 +5,7 @@
 		<property name="TRACE_FILE_NAME">trace</property>
 		<property name="ERROR_FILE_NAME">error</property>
 		<property name="INFO_FILE_NAME">info</property>
+		<property name="NETWORKLOG_FILE_NAME">network</property>
 	</properties>
 	<Appenders>
 		<RollingRandomAccessFile name="TestTraceLog"
@@ -34,6 +35,15 @@
 				<SizeBasedTriggeringPolicy size="1024 MB" />
 			</Policies>
 		</RollingRandomAccessFile>
+		<RollingRandomAccessFile name="ChromeNetworkLog"
+			fileName="${LOG_HOME}/${NETWORKLOG_FILE_NAME}.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/${ERROR_FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i.log">
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="1024 MB" />
+			</Policies>
+		</RollingRandomAccessFile>
 	</Appenders>
 
 	<Loggers>
@@ -42,6 +52,9 @@
 		</Logger>
 		<Logger name="myinfo" level="info" additivity="false">
 			<AppenderRef ref="TestInfoLog" />
+		</Logger>
+		<Logger name="mynetworklog" level="trace" additivity="false">
+			<AppenderRef ref="ChromeNetworkLog" />
 		</Logger>
 		<Root level="error">
 			<AppenderRef ref="TestErrorLog" />

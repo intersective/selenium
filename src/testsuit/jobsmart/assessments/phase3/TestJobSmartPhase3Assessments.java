@@ -74,7 +74,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 			
 			String activityName = Tools.getElementTextContent(findElement(oneAct, ".card-title"));
 			if (!assessment.getName().equals(activityName)) {
-				TestLogger.trace(String.format("we would not work on this - %s - this time", activityName));
+				TestLogger.trace(String.format("we would not work on this - [%s] - this time", activityName));
 				continue;
 			}
 			
@@ -89,7 +89,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 			found = true;
 		}
 		if (!found) {
-			TestLogger.trace(String.format("we can not find (%s)", assessment.getName()));
+			TestLogger.trace(String.format("we can not find [%s]", assessment.getName()));
 			return;
 		}
 		
@@ -180,6 +180,10 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
+		}
+		
+		if (workflows.size() < 1) {
+			return;
 		}
 		
 		for (MileStone mileStone : workflows) {

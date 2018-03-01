@@ -3,14 +3,20 @@ package service;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import common.BuildConfig;
@@ -54,7 +60,11 @@ public class ShareWebDriver {
 					driver = new ChromeDriver(service, chromeOptions);
 				}
 			} else {
-				driver = new ChromeDriver(service);
+				DesiredCapabilities caps = DesiredCapabilities.chrome();
+				LoggingPreferences logPrefs = new LoggingPreferences();
+				logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
+				caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+				driver = new ChromeDriver(service , caps);
 				driver.manage().window().maximize();
 			}
 		}
@@ -71,6 +81,13 @@ public class ShareWebDriver {
 	}
 
 	public void releaseResource() {
+		int total = 0;
+		Iterator<LogEntry> logEntries= driver.manage().logs().get(LogType.PERFORMANCE).iterator();
+		while(logEntries.hasNext()) {
+			total++;
+			TestLogger.logNetwork(logEntries.next().getMessage());
+		}
+		TestLogger.logNetwork(String.format("%s %s log entries found", total, LogType.PERFORMANCE));
 		if (driver != null) {
 			driver.quit();
 		}
