@@ -31,11 +31,7 @@ public class TestAppv1AssessmentModerated extends TestAppv1Assessment {
 		super.main();
 		UIAction.waitForElementVisible(sw, ".nav-bar-block[nav-bar=active] button[ng-click='goBack()']").click();// back to the milestone page
 		Tools.forceToWait(2);
-		WebElement backdrop = sw.waitForElement(".backdrop");
-		while (backdrop.getAttribute("class").contains("visible")) {
-			Tools.forceToWait(1);
-			backdrop = sw.waitForElement("backdrop");
-		}
+		waitForBackdropRemoved();
 		
 		findElement(".tab-nav > a:nth-of-type(1)").click();
 		waitForLoadFinished();

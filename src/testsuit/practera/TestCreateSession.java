@@ -47,6 +47,8 @@ public class TestCreateSession extends TestTemplate {
 		ShareConfig.currentTimeline = actions.createNewTimeLine(sw);
 		actions.waitToastMessageDisappear(sw);
 		Tools.forceToWait(3);
+		sw.waitForElement("#projectTab > li:nth-of-type(2) > a").click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		
 		WebElement calendarBtn = null;
 		boolean continued = true;

@@ -34,4 +34,12 @@ public abstract class TestMailtrap extends TestTemplate {
 		Tools.forceToWait(2);
 	}
 	
+	protected void waitForBackdropRemoved() {
+		WebElement backdrop = sw.waitForElement(".backdrop");
+		while (backdrop.getAttribute("class").contains("visible")) {
+			Tools.forceToWait(1);
+			backdrop = sw.waitForElement("backdrop");
+		}
+	}
+	
 }

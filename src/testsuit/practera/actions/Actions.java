@@ -114,7 +114,7 @@ public class Actions implements PageAction {
 	public String createNewTimeLine(SeleniumWaiter sw) {
 		sw.waitForElement("//span[text()='Project']", ElementType.XPATH).click();
 		sw.waitForElement("//a[@href='/admin/project/projects']", ElementType.XPATH).click();
-		sw.waitForElement("#projectTab > li:nth-of-type(2) > a").click();
+		sw.waitForElement("#projectTab > li:nth-of-type(1) > a").click();
 		Tools.forceToWait(BuildConfig.jsWaitTime);
 		sw.waitForElement("#project-list .thumbnail:nth-of-type(1) .buttons a i").click();// to create time line page
 		
