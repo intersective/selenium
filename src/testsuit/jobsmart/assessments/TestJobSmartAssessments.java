@@ -15,11 +15,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Throwables;
+
 import service.AssignmentDataService;
 import service.TestLogger;
 import service.Tools;
 import testsuit.JobSmartTestTemplate;
-
 import common.ElementType;
 
 
@@ -38,7 +39,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		Tools.forceToWait(3);
 		int currentPoints;
 		try {
-			currentPoints = Integer.parseInt(sw.waitForElement("#fillgaugeScore > g > g > text").getAttribute("textContent").trim());
+			currentPoints = Integer.parseInt(sw.waitForElement("#fillgaugeScore .liquidFillGaugeText:nth-of-type(1)").getAttribute("textContent").trim());
 		} catch (Exception e) {
 			currentPoints = 0;
 		}
@@ -94,7 +95,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 			doAssessment(assessment);
 			int points = clickAfterFinishAssessment();
 			TestLogger.trace(String.format("gained point [%s]", points));
-			int incrementedPoints = Integer.parseInt(sw.waitForElement("#fillgaugeScore > g > g > text").getAttribute("textContent").trim());
+			int incrementedPoints = Integer.parseInt(sw.waitForElement("#fillgaugeScore .liquidFillGaugeText:nth-of-type(1)").getAttribute("textContent").trim());
 			try {
 				Assert.assertEquals(incrementedPoints - currentPoints, points);
 			} catch (AssertionError error) {
@@ -169,16 +170,24 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		Tools.forceToWait(1);
 		sw.waitForElement(".popup> .popup-buttons > button").click();
 		Tools.forceToWait(2);
-		WebElement gotIt = sw.waitForElement(".modal button");
-		WebElement numberAnimation = sw.waitForElement(".modal .number-animation");
-		int points = 0;
-		if (numberAnimation != null) {
-			String number = Tools.getElementTextContent(numberAnimation);
-			points = Tools.isEmptyString(number) ? 0 : Integer.parseInt(number.substring(1).split(" ")[0].trim());// no points set for this activity
+		boolean clicked = false;
+		while (!clicked) {
+			try {
+				WebElement gotIt = sw.waitForElement(".modal button");
+				gotIt.click();
+				clicked  = true;
+			} catch (Exception e) {
+				TestLogger.error(Throwables.getStackTraceAsString(e));
+				clicked = false;
+			}
+			if (!clicked) {
+				Tools.forceToWait(3);
+			}
 		}
-		gotIt.click();
 		Tools.forceToWait(3);
-		return points;
+		// there is no way to get the achievement point on the page right now unless we put in the activity instructions,
+		// basically we would set all achievement points to 100
+		return 100; 
 	}
 	
 	protected void back() {

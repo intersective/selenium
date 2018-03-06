@@ -97,7 +97,6 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 		clickAfterFinishAssessment();
 		sw.waitForElement(".tab-nav > a:nth-of-type(2)").click();
 		waitForLoadFinished();
-		back();// after finished an activity, the page will stay at the activity detail, so we go back to the activity list page
 		Tools.forceToWait(2);
 	}
 	
@@ -169,6 +168,7 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 	@Test(description = "test questions for Job smart phase 3", groups = "practera_jobsmartp3_assessment")
 	public void main() {
 		ArrayList<MileStone> workflows = new ArrayList<MileStone>();
+		ShareConfig.jobsmartWorkflow = "item-1";
 		try {
 			Workflow workflow = AssignmentDataService.getInstance().loadDataFromJsonFile(String.format("%s%sdata%sjobsmart%sphase3%s%s.json",
 					System.getProperty("user.dir"), File.separator, File.separator, File.separator, File.separator, ShareConfig.jobsmartWorkflow), Workflow.class);
@@ -192,6 +192,11 @@ public class TestJobSmartPhase3Assessments extends TestJobSmartAssessments {
 			actions.login(sw, BuildConfig.jobsmartStudent, BuildConfig.jobsmartStudentPassword);
 			
 			waitForLoadFinished();
+			WebElement getStarted = UIAction.waitForElementVisible(sw, "//button[text()='Click here to get started!']", ElementType.XPATH, 15);
+			if (getStarted != null) {// in case of first login
+				getStarted.click();
+			}
+			
 			sw.waitForElement("//div[@nav-bar='active']/ion-header-bar/div[text()='My Score']", ElementType.XPATH);
 			Tools.forceToWait(3);
 			sw.waitForElement(".tab-nav > a:nth-of-type(2)").click();

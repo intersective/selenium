@@ -31,7 +31,7 @@ public class TestJobsmartLogin extends TestTemplate {
 	
 	@Test(description = "test a new student login for Job smart", groups = "practera_jobsmart_login")
 	public void main() {
-		driver.get(BuildConfig.jobsmartUrl);	
+		driver.get(BuildConfig.jobsmartUrl);
 		
 		Tools.forceToWait(10);
 		actions.login(sw, userName, userName);
