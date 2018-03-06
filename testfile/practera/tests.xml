@@ -11,6 +11,8 @@
 		<classes>
   			<class name="testsuit.practera.TestCreateEvent" />
   			<class name="testsuit.practera.TestEnrolment" />
+  			<class name="testsuit.practera.TestPERegistration" />
+  			<class name="testsuit.practera.TestPERegistrationProcess" />
   		</classes>
   	</test>
 

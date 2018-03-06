@@ -260,4 +260,10 @@ public abstract class TestTemplate implements ITest {
 		}
 	}
 	
+	protected void waitForClickBlock() {
+		while (sw.waitForElement(".click-block").getAttribute("class").contains("click-block-active")) {
+			Tools.forceToWait(BuildConfig.jsWaitTime);
+		}
+	}
+	
 }

@@ -9,8 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import pom.pe.AccountPage;
-import pom.pe.DashboardPage;
 import respositry.LocalDataBase;
 import respositry.LocalStore;
 import service.PageActionFactory;
@@ -39,46 +37,11 @@ public class TestEnrolment extends TestTemplate {
 
 	@Test(description = "test a new student enrolment", groups = "practera")
 	public void main() {
-		enroll("5", "6", "3", "Timeline", BuildConfig.enrolmentFile);
+		enroll("5", "5", "3", "Timeline", BuildConfig.enrolmentFile);
 		
-		driver.get(regUrl);
-		Tools.forceToWait(7);
-		
-		WebElement agreeCheckBox = sw.waitForElement("ion-checkbox[value=Agree]");
-		Assert.assertNotNull(agreeCheckBox);
-		agreeCheckBox.click();
-		findElement(".register-next button").click();
-		
-		WebElement generalForm = sw.waitForElement(".general-form");
-		Assert.assertNotNull(generalForm);
-		generalForm.findElement(Tools.getBy("ion-input[type=password] input")).sendKeys(new String[] { BuildConfig.password });
-		Tools.forceToWait(BuildConfig.inputWaitTime);
-		generalForm.findElement(Tools.getBy("ion-input[name=verify_password] input")).sendKeys(new String[] { BuildConfig.password });
-		Tools.forceToWait(BuildConfig.inputWaitTime);
-		generalForm.findElement(Tools.getBy(ElementType.TAGNAME, "button")).click();
-		
-		DashboardPage dashboardPage = new DashboardPage();
 		BuildConfig.userName = String.format("%s@%s", studentUserName, BuildConfig.testDomain);
 		LocalDataBase.getInstance().addUser(BuildConfig.peId, BuildConfig.userName, regUrl);
-		LocalStore ls = LocalStore.getInstance();
-		ls.addValue("userName", BuildConfig.userName);
-		ls.addUserPoints(dashboardPage.getUserPoints(sw));
-		
-		AccountPage accountPage = new AccountPage();
-		accountPage.getVideo(sw);
-		WebElement doneBtn = accountPage.getVideoDoneBtn(sw);
-		if (doneBtn != null) {
-			Tools.forceToWait(5);
-			doneBtn.click();
-		}
-		waitForLoadFinished();
-		
-		accountPage.go(sw);
-		waitForLoadFinished();
-		WebElement exit = accountPage.getExitBtn(sw);
-		Assert.assertNotNull(exit);
-		Assert.assertTrue(exit.isEnabled());
-		exit.click();
+		LocalStore.getInstance().addValue("userName", BuildConfig.userName);
 	}
 	
 	/**
@@ -118,12 +81,12 @@ public class TestEnrolment extends TestTemplate {
 		WebElement recordSearch = sw.waitForElement("#indextbl_filter");
 		recordSearch.findElement(Tools.getBy(ElementType.TAGNAME, "input")).sendKeys(new String[] { studentUserName });
 		Tools.forceToWait(BuildConfig.jsWaitTime);
-		List<WebElement> searchResults = findElements("table#indextbl tbody tr");
+		List<WebElement> searchResults = sw.waitForListContent("table#indextbl tbody tr");
 		while (searchResults.size() != 1) {
 			Tools.forceToWait(1);
-			searchResults = findElements("table#indextbl tbody tr");
+			searchResults = sw.waitForListContent("table#indextbl tbody tr");
 		}
-		WebElement verifyLink = findElement(String.format("table#indextbl tbody tr:nth-of-type(1) td:nth-of-type(%s) a", regUrlLocation));
+		WebElement verifyLink = sw.waitForElement(String.format("table#indextbl tbody tr:nth-of-type(1) td:nth-of-type(%s) a", regUrlLocation));
 		regUrl = verifyLink.getAttribute("href");
 		findElement(String.format("table#indextbl tbody tr:nth-of-type(1) td:nth-of-type(%s) > div > a:nth-of-type(3)", Integer.parseInt(regUrlLocation) + 2)).click();
 		actions.waitToastMessageDisappear(sw);

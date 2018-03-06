@@ -44,8 +44,10 @@ public class TestCreateEvent extends TestTemplate {
 		Tools.forceToWait(BuildConfig.jsWaitTime);
 		project.findElement(Tools.getBy("ul.submenu li:nth-of-type(1)")).click();
 		
+		sw.waitForElement("#projectTab > li:nth-of-type(2) > a").click();
+		Tools.forceToWait(BuildConfig.jsWaitTime);
 		List<WebElement> projects = sw.waitForListContent("table#tblTimeline tbody tr");
-		projects.get(0).findElement(Tools.getBy("td.td-actions > div > a:nth-of-type(2)")).click();
+		projects.get(3).findElement(Tools.getBy("td.td-actions > div > a:nth-of-type(2)")).click();
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH)+1;
 		int day = current.get(Calendar.DAY_OF_MONTH);
