@@ -15,12 +15,13 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Throwables;
-
 import service.AssignmentDataService;
 import service.TestLogger;
 import service.Tools;
+import service.UIAction;
 import testsuit.JobSmartTestTemplate;
+
+import com.google.common.base.Throwables;
 import common.ElementType;
 
 
@@ -84,28 +85,42 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 			}
 			
 			List<WebElement> buttons = findElements(oneAct, "button");
-			scrollIfNotVisible(buttons.get(buttons.size() - 1)).click();
-			waitForLoadFinished();
-			if (sw.waitForElement("ion-view[nav-view='active'][state='app.assessment']") == null) {
-				TestLogger.trace(String.format("[%s] [%s] assessment is not an assessment", i, activityName));
-				back();
-				continue;
+			if (buttons.size() == 2 && Tools.getElementTextContent(buttons.get(0)).equals("Book")) {
+				scrollIfNotVisible(buttons.get(0)).click();
+				WebElement bookBtn = sw.waitForElement("ion-nav-view[name='activities'][nav-view='active'] div[ng-if='activity.hasSession'] button");
+				bookBtn.click();
+				waitForLoadFinished();
+				tryToClickGotIt();
+				waitForModalBackDrop();
+				waitForClickBlock();
+				UIAction.waitForElementVisible(sw, "div[nav-bar='active'] .back-button").click();
+				waitForModalBackDrop();
+				waitForClickBlock();
+				UIAction.waitForElementVisible(sw, "div[nav-bar='active'] .buttons .back-button").click();
+				waitForLoadFinished();
+			} else {
+				scrollIfNotVisible(buttons.get(buttons.size() - 1)).click();
+				waitForLoadFinished();
+				if (sw.waitForElement("ion-view[nav-view='active'][state='app.assessment']") == null) {
+					TestLogger.trace(String.format("[%s] [%s] assessment is not an assessment", i, activityName));
+					back();
+					continue;
+				}
+				
+				doAssessment(assessment);
+				int points = clickAfterFinishAssessment();
+				TestLogger.trace(String.format("gained point [%s]", points));
+				int incrementedPoints = Integer.parseInt(sw.waitForElement("#fillgaugeScore .liquidFillGaugeText:nth-of-type(1)").getAttribute("textContent").trim());
+				try {
+					Assert.assertEquals(incrementedPoints - currentPoints, points);
+				} catch (AssertionError error) {
+					TestLogger.trace(error.getMessage());
+				}
+				currentPoints = incrementedPoints;
+				sw.waitForElement(".tab-nav > a:nth-of-type(2)").click();
+				waitForLoadFinished();
+				Tools.forceToWait(2);
 			}
-			
-			doAssessment(assessment);
-			int points = clickAfterFinishAssessment();
-			TestLogger.trace(String.format("gained point [%s]", points));
-			int incrementedPoints = Integer.parseInt(sw.waitForElement("#fillgaugeScore .liquidFillGaugeText:nth-of-type(1)").getAttribute("textContent").trim());
-			try {
-				Assert.assertEquals(incrementedPoints - currentPoints, points);
-			} catch (AssertionError error) {
-				TestLogger.trace(error.getMessage());
-			}
-			currentPoints = incrementedPoints;
-			sw.waitForElement(".tab-nav > a:nth-of-type(2)").click();
-			waitForLoadFinished();
-			back();// after finished an activity, the page will stay at the activity detail, so we need to go back
-			Tools.forceToWait(2);
 		}
 	}
 	
@@ -140,7 +155,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		ArrayList<Question> questionsData = assessment.getQuestions();
 		for (WebElement q : questions) {
 			boolean found = false;
-			String questionTitle = Tools.getElementTextContent(findElement(q, "div > .item"));
+			String questionTitle = Tools.getElementTextContentWithSpecialChr(findElement(q, "div > .item"));
 			if (!q.isDisplayed()) {
 				scrollToElement(q);
 			}
@@ -170,20 +185,7 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 		Tools.forceToWait(1);
 		sw.waitForElement(".popup> .popup-buttons > button").click();
 		Tools.forceToWait(2);
-		boolean clicked = false;
-		while (!clicked) {
-			try {
-				WebElement gotIt = sw.waitForElement(".modal button");
-				gotIt.click();
-				clicked  = true;
-			} catch (Exception e) {
-				TestLogger.error(Throwables.getStackTraceAsString(e));
-				clicked = false;
-			}
-			if (!clicked) {
-				Tools.forceToWait(3);
-			}
-		}
+		tryToClickGotIt();
 		Tools.forceToWait(3);
 		// there is no way to get the achievement point on the page right now unless we put in the activity instructions,
 		// basically we would set all achievement points to 100
@@ -216,11 +218,30 @@ public class TestJobSmartAssessments extends JobSmartTestTemplate {
 				scrollIfNotVisible(q.findElement(Tools.getBy("div:nth-of-type(1) button:nth-of-type(1)"))).click();
 				Tools.forceToWait(5);
 				fileUpload(answer);
+				Tools.forceToWait(5);
 			}
 		} else if (type.contains("video")) {
 			scrollIfNotVisible(q.findElement(Tools.getBy("button:nth-of-type(1)"))).click();
 			Tools.forceToWait(5);
 			postVideoByUrl(answer);
+			Tools.forceToWait(5);
+		}
+	}
+	
+	private void tryToClickGotIt() {
+		boolean clicked = false;
+		while (!clicked) {
+			try {
+				WebElement gotIt = sw.waitForElement(".modal button");
+				gotIt.click();
+				clicked  = true;
+			} catch (Exception e) {
+				TestLogger.error(Throwables.getStackTraceAsString(e));
+				clicked = false;
+			}
+			if (!clicked) {
+				Tools.forceToWait(3);
+			}
 		}
 	}
 	

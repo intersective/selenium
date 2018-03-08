@@ -37,4 +37,12 @@ public abstract class JobSmartTestTemplate extends TestTemplate {
 		}
 	}
 	
+	protected void waitForModalBackDrop() {
+		WebElement modalBackDrop = sw.waitForElement(".modal-backdrop");
+		while (!modalBackDrop.getAttribute("class").contains("hide")) {
+			Tools.forceToWait(1);
+			modalBackDrop = sw.waitForElement(".modal-backdrop");
+		}
+	}
+	
 }
