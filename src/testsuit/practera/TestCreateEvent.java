@@ -46,8 +46,8 @@ public class TestCreateEvent extends TestTemplate {
 		
 		sw.waitForElement("#projectTab > li:nth-of-type(2) > a").click();
 		Tools.forceToWait(BuildConfig.jsWaitTime);
-		List<WebElement> projects = sw.waitForListContent("table#tblTimeline tbody tr");
-		projects.get(3).findElement(Tools.getBy("td.td-actions > div > a:nth-of-type(2)")).click();
+		List<WebElement> timelines = sw.waitForListContent("table#tblTimeline tbody tr");
+		timelines.get(0).findElement(Tools.getBy("td.td-actions > div > a:nth-of-type(2)")).click();
 		Calendar current = Calendar.getInstance();
 		int month = current.get(Calendar.MONTH)+1;
 		int day = current.get(Calendar.DAY_OF_MONTH);
@@ -78,8 +78,6 @@ public class TestCreateEvent extends TestTemplate {
 		dialog = getModalDialog();
 		dialog.findElement(Tools.getBy("input#EventVisibilityParticipant")).click();
 		dialog.findElement(Tools.getBy("input#EventVisibilityMentor")).click();
-		sw.waitForElement("div.modal[role=dialog] > .modal-dialog #typeall #EventAllDay").click();// set the event to be all day
-		sw.waitForElement("div.modal[role=dialog] > .modal-dialog #typeall #EventAllDay").click();// set the event not to be all day
 		sw.waitForElement("div.modal[role=dialog] > .modal-dialog #fend .datetime-calendar").click();
 		sw.waitForElement("div.modal[role=dialog] > .modal-dialog #fend .datetime-calendar").click();
 		WebElement calendarDays = sw.waitForElement("div.modal[role=dialog] > .modal-dialog #fend .bootstrap-datetimepicker-widget .datepicker > .datepicker-days");

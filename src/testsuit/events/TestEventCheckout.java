@@ -55,6 +55,11 @@ public class TestEventCheckout extends AssignmentTestTemplate {
 		Assert.assertFalse(new Boolean(checkInBtn.getAttribute("disabled")));
 		checkInBtn.click();
 		
+		WebElement clickBlock = sw.waitForElement(".click-block");
+		while (clickBlock != null && clickBlock.getAttribute("class").contains("click-block-active")) {
+			Tools.forceToWait(2);
+			clickBlock = sw.waitForElement(".click-block");
+		}
 		assessmentsPage = new AssessmentsPage();
 		checkAssessmentInformation(qn);
 		doQuesitons(0, 1, qn, false, true, false);

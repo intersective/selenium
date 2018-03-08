@@ -37,7 +37,7 @@ public class TestEnrolment extends TestTemplate {
 
 	@Test(description = "test a new student enrolment", groups = "practera")
 	public void main() {
-		enroll("5", "5", "3", "Timeline", BuildConfig.enrolmentFile);
+		enroll("5", "5", "3", "Automation Timeline", BuildConfig.enrolmentFile);
 		
 		BuildConfig.userName = String.format("%s@%s", studentUserName, BuildConfig.testDomain);
 		LocalDataBase.getInstance().addUser(BuildConfig.peId, BuildConfig.userName, regUrl);
