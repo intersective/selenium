@@ -21,10 +21,14 @@ public abstract class TestMailtrap extends TestTemplate {
 	}
 	
 	protected void searchEmail(String keyword, String filter) {
-		sw.waitForElement("#main .quick_filter").clear();
-		sw.waitForElement("#main .quick_filter").sendKeys(new String[] { keyword });
-		waitForLoadFinished();
-		Assert.assertNull(sw.waitForElement("//*[contains(@class, 'messages_list')]/li/p[text()='Nothing has been found for the filter']"));
+		boolean noResult = true;
+		do {
+			Tools.forceToWait(3);
+			sw.waitForElement("#main .quick_filter").clear();
+			sw.waitForElement("#main .quick_filter").sendKeys(new String[] { keyword });
+			waitForLoadFinished();
+			noResult = (sw.waitForElement("//*[contains(@class, 'messages_list')]/li/p[text()='Nothing has been found for the filter']", ElementType.XPATH) != null);
+		} while (noResult);
 		WebElement email = sw.waitForElement(String.format(
 				"//*[contains(concat(' ', @class, ' '), 'messages_list')]/*[contains(concat(' ', @class, ' '), 'email')]/*[contains(text(),'%s')]", filter),
 				ElementType.XPATH);
