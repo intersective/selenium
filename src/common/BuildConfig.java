@@ -74,4 +74,6 @@ public class BuildConfig {
 	public static String jobsmartMentor;
 	public static String jobsmartMentorPassword;
 	
+	public static String appv1Program;
+	
 }

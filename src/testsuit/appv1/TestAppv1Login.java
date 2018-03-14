@@ -50,7 +50,7 @@ public class TestAppv1Login extends Appv1TestTemplate {
 		loginForm.findElement(Tools.getBy("#jsmbpLoginBtn")).click();
 		Assert.assertNull(sw.waitForElement("//*[@class='popup-title'][text()='Invalid Login Details']", ElementType.XPATH));
 		
-		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".item-content:nth-of-type(1)")), "App V1 Selenium Program");
+		Assert.assertEquals(Tools.getElementTextContent(sw.waitForElement(".item-content:nth-of-type(1)")), BuildConfig.appv1Program);
 		findElement(".jsmbp-switch-item:nth-of-type(1)").click();
 		
 		waitForLoadFinished();

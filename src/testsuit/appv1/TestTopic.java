@@ -69,7 +69,7 @@ public class TestTopic extends Appv1TestTemplate {
 		for (Topic tp : topcis) {
 			WebElement assessmentHeader = findElement(assessments.get(i), ".item");
 			Assert.assertEquals(Tools.getElementTextContent(findElement(assessmentHeader,"detail-title h2")), tp.getTitle());
-			Assert.assertEquals(Tools.getElementTextContent(findElement(assessmentHeader, "detail-title p")), "TOPIC");
+			Assert.assertEquals(Tools.getElementTextContent(findElement(assessmentHeader, "detail-title p")).toLowerCase(), "topic");
 			assessments.get(i).click();
 			
 			waitForLoadFinished();

@@ -3,10 +3,10 @@ package testsuit;
 
 import org.openqa.selenium.WebElement;
 
-import com.google.common.base.Throwables;
-
 import service.TestLogger;
 import service.Tools;
+
+import com.google.common.base.Throwables;
 import common.BuildConfig;
 import common.ElementType;
 
@@ -38,10 +38,8 @@ public abstract class Appv1TestTemplate extends TestTemplate {
 	}
 	
 	protected void waitForBackdropRemoved() {
-		WebElement backdrop = sw.waitForElement(".backdrop");
-		while (backdrop.getAttribute("class").contains("visible")) {
+		while (sw.waitForElement(".backdrop").getAttribute("class").contains("visible")) {
 			Tools.forceToWait(1);
-			backdrop = sw.waitForElement("backdrop");
 		}
 	}
 	

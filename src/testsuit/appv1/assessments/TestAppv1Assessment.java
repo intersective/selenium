@@ -55,7 +55,7 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 		WebElement assessmemtElement = scrollIfNotVisible(assessments.get(assessmentLocation + numberOfTopics));
 		WebElement assessmentHeader = assessmemtElement.findElement(Tools.getBy(".item > detail-title"));
 		Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy(".title"))), assessment.getName());
-		Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy("p"))), "ASSESSMENT");
+		Assert.assertEquals(Tools.getElementTextContent(assessmentHeader.findElement(Tools.getBy("p"))).toLowerCase(), "assessment");
 		assessmemtElement.click();
 		
 		waitForLoadFinished();
@@ -73,7 +73,9 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 			WebElement description = findElement(q, "div[ng-if='question.description']");
 			if (description != null) {
 				answerContainer = q.findElement(Tools.getBy("div:nth-of-type(3)"));
-				Assert.assertEquals(Tools.getElementTextContent(description), qu.getDescription());
+				if (qu.getDescription() != null && !"".equals(qu.getDescription().trim())) {
+					Assert.assertEquals(Tools.getElementTextContent(description), qu.getDescription());
+				}
 			} else {
 				answerContainer = q.findElement(Tools.getBy("div:nth-of-type(2)"));
 			}

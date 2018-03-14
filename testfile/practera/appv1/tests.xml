@@ -10,7 +10,6 @@
 	<test name="Practera appv1 test" group-by-instances="true">
 		<classes>
 			<class name="testsuit.practera.TestAppV1Enrolment" />
-			<class name="testsuit.practera.Appv1TestRegistration" />
 		</classes>
 	</test>
 
