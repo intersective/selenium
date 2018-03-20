@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
@@ -167,6 +168,13 @@ public class Tools {
 	
 	public static String prependZero(int number) {
 		return number < 10 ? String.format("0%s", number) : String.valueOf(number);
+	}
+	
+	public static String generatIdByTime() {
+		Calendar current = Calendar.getInstance();
+		return String.format("%s%s%s%s%s%s", current.get(Calendar.YEAR), Tools.prependZero(current.get(Calendar.MONTH) + 1), 
+				Tools.prependZero(current.get(Calendar.DAY_OF_MONTH)), Tools.prependZero(current.get(Calendar.HOUR_OF_DAY)),
+				Tools.prependZero(current.get(Calendar.MINUTE)), Tools.prependZero(current.get(Calendar.SECOND)));
 	}
 	
 }

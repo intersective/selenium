@@ -42,7 +42,7 @@ public class TestTopic extends Appv1TestTemplate {
 		Assert.assertEquals(Tools.getElementTextContent(findElement(currentAct, ".title")), mileStone.getName());
 		Assert.assertEquals(Tools.getElementTextContent(findElement(currentAct, "h3")), mileStone.getStatus());
 		
-		findElement(".tab-nav > a:nth-of-type(2)").click();// a button can only click once in this app, so that we do this in the login test case
+		findElement(".tab-nav > a:nth-of-type(2)").click();// a button can only click once in this app
 		waitForLoadFinished();//we go to the activities page
 		Tools.forceToWait(2);
 		

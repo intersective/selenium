@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite - Appv1 team student" parallel="none" preserve-order="true">
+
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+	</listeners>
+	
+	<test name="Appv1 team student test" group-by-instances="true">
+		<classes>
+			<class name="testsuit.practera.TestAppv1AddTeam" />
+			<class name="testsuit.appv1.TestAppv1Login" />
+  			<class name="testsuit.appv1.assessments.TestAppv1TeamEvaluation" />
+	  		<class name="testsuit.appv1.TestLogout" />
+	  	</classes>
+	</test>
+
+</suite>

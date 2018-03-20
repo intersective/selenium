@@ -80,7 +80,7 @@ public class Actions implements PageAction {
 	}
 	
 	public String enrolStudentViaCSV(SeleniumWaiter sw, String enrolmentFile) {
-		String participantId = generateStudentId();
+		String participantId = Tools.generatIdByTime();
 		String studentUserName = String.format("selenium.%s", participantId);
 		String[] participantIds = new String[1];
 		participantIds[0] = participantId;
@@ -97,18 +97,11 @@ public class Actions implements PageAction {
 	}
 	
 	public String enrolStudentViaTextBox(SeleniumWaiter sw) {
-		String participantId = generateStudentId();
+		String participantId = Tools.generatIdByTime();
 		String studentUserName = String.format("selenium.%s", participantId);
 		sw.waitForElement("textArea[name='data[Enrolment][csvtext]']")
 				.sendKeys(new String[] { String.format("%s@%s,%s,%s,fullaccess", studentUserName, BuildConfig.testDomain, participantId, studentUserName) });
 		return studentUserName;
-	}
-	
-	private String generateStudentId() {
-		Calendar current = Calendar.getInstance();
-		return String.format("%s%s%s%s%s%s", current.get(Calendar.YEAR), Tools.prependZero(current.get(Calendar.MONTH) + 1), 
-				Tools.prependZero(current.get(Calendar.DAY_OF_MONTH)), Tools.prependZero(current.get(Calendar.HOUR_OF_DAY)),
-				Tools.prependZero(current.get(Calendar.MINUTE)), Tools.prependZero(current.get(Calendar.SECOND)));
 	}
 	
 	public String createNewTimeLine(SeleniumWaiter sw) {

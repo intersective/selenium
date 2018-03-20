@@ -23,7 +23,7 @@ import common.ElementType;
 
 public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 
-	private Questionnaire questionare;
+	protected Questionnaire questionare;
 	private int assessmentLocation;
 	protected boolean doFileQuestions = true;
 	protected int numberOfTopics;
@@ -89,27 +89,27 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 		checkStatus();
 	}
 	
-	private void doQuestion(WebElement q, String answer) {
-		String type = q.getAttribute("ng-if");
+	private void doQuestion(WebElement ac, String answer) {
+		String type = ac.getAttribute("ng-if");
 		if (type.contains("text")) {
-			scrollIfNotVisible(q.findElement(Tools.getBy("textarea"))).sendKeys(new String[] { answer });
-		} else if (type.contains("oneof")) {
-			scrollIfNotVisible(q.findElement(Tools.getBy(String.format(".list > label:nth-of-type(%s)", answer)))).click();
+			scrollIfNotVisible(ac.findElement(Tools.getBy("textarea"))).sendKeys(new String[] { answer });
+		} else if (type.contains("oneof")|| type.contains("team member selector")) {
+			scrollIfNotVisible(ac.findElement(Tools.getBy(String.format(".list > label:nth-of-type(%s)", answer)))).click();
 		} else if (type.contains("multiple")) {
 			String[] chocies = answer.split(",");
 			for (String c : chocies) {
-				scrollIfNotVisible(q.findElement(Tools.getBy(String.format(".list > label:nth-of-type(%s)", c)))).click();
+				scrollIfNotVisible(ac.findElement(Tools.getBy(String.format(".list > label:nth-of-type(%s)", c)))).click();
 			}
 		} else if (doFileQuestions) {
 			if (type.contains("file")) {
-				String subType = q.findElement(Tools.getBy("div:nth-of-type(1)")).getAttribute("ng-if");
+				String subType = ac.findElement(Tools.getBy("div:nth-of-type(1)")).getAttribute("ng-if");
 				if (subType.contains("any") || subType.contains("video") || subType.contains("image")) {
-					scrollIfNotVisible(q.findElement(Tools.getBy("div:nth-of-type(1) button:nth-of-type(1)"))).click();
+					scrollIfNotVisible(ac.findElement(Tools.getBy("div:nth-of-type(1) button:nth-of-type(1)"))).click();
 					Tools.forceToWait(5);
 					fileUpload(answer);
 				}
 			} else if (type.contains("video")) {
-				scrollIfNotVisible(q.findElement(Tools.getBy("button:nth-of-type(1)"))).click();
+				scrollIfNotVisible(ac.findElement(Tools.getBy("button:nth-of-type(1)"))).click();
 				Tools.forceToWait(5);
 				postVideoByUrl(answer);
 			}

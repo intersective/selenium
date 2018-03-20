@@ -43,11 +43,13 @@ public class LocalDataBase {
 		String sql = "CREATE TABLE IF NOT EXISTS events (id text not null, eventname text not null, status text not null)";
 		String sql2 = "CREATE TABLE IF NOT EXISTS user (id text PRIMARY KEY, username text not null, regurl text)";
 		String sql3 = "CREATE TABLE IF NOT EXISTS user_assessment (username text not null, actname text not null, submissiontime text not null)";
+		String sql4 = "CREATE TABLE IF NOT EXISTS team_students (teamname text not null, usernames text, status text)";
 		try (Connection conn = DriverManager.getConnection(url);
 			Statement stmt = conn.createStatement()) {
 			stmt.execute(sql);
 			stmt.execute(sql2);
 			stmt.execute(sql3);
+			stmt.execute(sql4);
 		} catch (SQLException e) {
 			TestLogger.error(Throwables.getStackTraceAsString(e));
 		}
@@ -200,6 +202,96 @@ public class LocalDataBase {
 			stmt.setString(1, userName);
 			stmt.setString(2, activityName);
 			stmt.setString(3, submissionTime);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			TestLogger.error(Throwables.getStackTraceAsString(e));
+		}
+	}
+	
+	public String getActiveTeam() {
+		String sql = "SELECT teamname FROM team_students WHERE status = 1";
+		ResultSet rs = null;
+		
+		try (Connection conn = DriverManager.getConnection(url);
+			PreparedStatement stmt = conn.prepareStatement(sql)) {
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				return rs.getString(1) == null? "" : rs.getString(1);
+			}
+			return "";
+		} catch (SQLException e) {
+			TestLogger.error(Throwables.getStackTraceAsString(e));
+		} finally {
+			if (rs !=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					TestLogger.error(Throwables.getStackTraceAsString(e));
+				}
+			}
+		}
+		return null;
+	}
+	
+	public void createATeam(String teamName) {
+		String sql = "INSERT INTO team_students(teamname, usernames, status) VALUES(?, ?, 1)";
+		try (Connection conn = DriverManager.getConnection(url);
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, teamName);
+			stmt.setString(2, "");
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			TestLogger.error(Throwables.getStackTraceAsString(e));
+		}
+	}
+	
+	public String getTeamStudents(String teamName) {
+		String sql = "SELECT usernames FROM team_students WHERE teamname = ? and status = 1";
+		ResultSet rs = null;
+		
+		try (Connection conn = DriverManager.getConnection(url);
+			PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, teamName);
+			rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				return rs.getString(1) == null? "" : rs.getString(1);
+			}
+		} catch (SQLException e) {
+			TestLogger.error(Throwables.getStackTraceAsString(e));
+		} finally {
+			if (rs !=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					TestLogger.error(Throwables.getStackTraceAsString(e));
+				}
+			}
+		}
+		return null;
+	}
+	
+	public void addAStudentIntoATeam(String teamName, String studentName) {
+		String t = String.format("%s;%s", getTeamStudents(teamName), studentName);
+		
+		String sql = "UPDATE team_students SET usernames = ? WHERE teamname = ? and status = 1";
+		try (Connection conn = DriverManager.getConnection(url);
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, t);
+			stmt.setString(2, teamName);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			TestLogger.error(Throwables.getStackTraceAsString(e));
+		}
+	}
+	
+	public void invalidateATeam(String teamName) {
+		
+		String sql = "UPDATE team_students SET status = 0 WHERE teamname = ?";
+		try (Connection conn = DriverManager.getConnection(url);
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, teamName);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			TestLogger.error(Throwables.getStackTraceAsString(e));

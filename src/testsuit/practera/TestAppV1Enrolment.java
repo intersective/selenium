@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 
 import respositry.LocalDataBase;
 import service.Tools;
+
 import common.BuildConfig;
 
 
@@ -22,10 +23,18 @@ public class TestAppV1Enrolment extends TestEnrolment {
 	public void main() {
 		driver.get(BuildConfig.practeraUrl);
 		actions.login(sw, BuildConfig.appv1AdminUser, BuildConfig.appv1AdminPassword);
-		super.enroll("4", "5", "2", "App V1 timeline 1", BuildConfig.appv1EnrolmentFile);
+		super.enroll("4", "5", "3", "App V1 timeline 1", BuildConfig.appv1EnrolmentFile);
 		
 		BuildConfig.appv1UserName = String.format("%s@%s", studentUserName, BuildConfig.testDomain);
-		LocalDataBase.getInstance().addUser(BuildConfig.appv1Id, BuildConfig.appv1UserName, regUrl);
+		LocalDataBase ldb = LocalDataBase.getInstance();
+		ldb.addUser(BuildConfig.appv1Id, BuildConfig.appv1UserName, regUrl);
+		
+		String teamName = ldb.getActiveTeam();
+		if ("".equals(teamName)) {// only empty string if first run of whole test cases suite
+			teamName = String.format("team.%s", Tools.generatIdByTime());
+			ldb.createATeam(teamName);
+		}
+		ldb.addAStudentIntoATeam(teamName, studentUserName);
 		
 		driver.get(regUrl);
 		Tools.forceToWait(5);

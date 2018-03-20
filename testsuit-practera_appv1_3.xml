@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite - Team Students for appv1" parallel="none" preserve-order="true">
+
+	<listeners>
+		<listener class-name="listener.InitAppv1EnvironmentListener"/>
+		<listener class-name="listener.TestSuiteListener"/>
+		<listener class-name="listener.CustomReport"/>
+	</listeners>
+
+	<suite-files>
+		<suite-file path="testfile/appv1/tests_teamstudent.xml" />
+	</suite-files>
+
+</suite>

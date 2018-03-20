@@ -39,7 +39,7 @@ public class TestAppv1Review extends TestReview {
 
 	@Override
 	protected void logout() {
-		actions.logout(sw, "2");
+		actions.logout(sw, "3");
 	}
 	
 }
