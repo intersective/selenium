@@ -7,7 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import respositry.LocalDataBase;
 import service.AssignmentDataService;
 import service.Tools;
 
@@ -39,10 +38,6 @@ public class TestAppv1TeamEvaluation extends TestAppv1Assessment {
 		Tools.forceToWait(2);
 		
 		super.main();
-		
-		LocalDataBase ldb = LocalDataBase.getInstance();
-		String teamName = ldb.getActiveTeam();
-		ldb.invalidateATeam(teamName);
 	}
 
 	@Override

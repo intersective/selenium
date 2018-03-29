@@ -11,6 +11,7 @@
 
 	<suite-files>
 		<suite-file path="testfile/appv1/tests_teamstudent.xml" />
+		<suite-file path="testfile/appv1/tests_teamassessment.xml" />
 	</suite-files>
 
 </suite>

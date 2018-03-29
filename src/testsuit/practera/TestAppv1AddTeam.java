@@ -41,7 +41,7 @@ public class TestAppv1AddTeam extends TestTemplate {
 		sw.waitForListContent("#indextbl > tbody > tr", ElementType.CSSSELECTOR, 60);// wait the team list display
 		sw.waitForElement(".page-header a").click();
 		
-		UIAction.waitForElementVisible(sw, "#TeamAdminAddForm", 90);
+		UIAction.waitForElementVisible(sw, "#TeamAdminAddForm", 120);
 		LocalDataBase ldb = LocalDataBase.getInstance();
 		String teamName = ldb.getActiveTeam();
 		String[] studentNames = ldb.getTeamStudents(teamName).split(";");
@@ -57,6 +57,7 @@ public class TestAppv1AddTeam extends TestTemplate {
 		actions.waitToastMessageDisappear(sw);
 		
 		actions.logout(sw, "3");
+		Tools.forceToWait(180);// sometimes must wait team data being actually there and get team member api can get it  
 	}
 
 }

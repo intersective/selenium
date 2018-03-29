@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import service.AssignmentDataService;
 import service.Tools;
 import testsuit.Appv1TestTemplate;
+
 import common.BuildConfig;
 import common.ElementType;
 
@@ -28,6 +29,8 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 	protected boolean doFileQuestions = true;
 	protected int numberOfTopics;
 	protected String assessmentStatusLocator = ".jsmbp-detail-items > div:nth-of-type(%s) > .item > detail-title p[ng-if='seq.asmtStatus']";
+	private boolean isTeam;
+	private boolean checkAnswers;
 	
 	@BeforeClass
 	public void setup() {
@@ -80,13 +83,29 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 				answerContainer = q.findElement(Tools.getBy("div:nth-of-type(2)"));
 			}
 			answerContainer = scrollIfNotVisible(answerContainer);
-			doQuestion(answerContainer, qu.getAnswer());
+			if (checkAnswers) {
+				checkQuestionAnswer(answerContainer, qu.getAnswer());
+			} else {
+				doQuestion(answerContainer, qu.getAnswer());
+			}
 			i++;
 		}
 		Tools.forceToWait(1);
 		
-		submit();
-		checkStatus();
+		if (checkAnswers) {
+			sw.waitForElement(".nav-bar-block[nav-bar='active'] .back-button[ng-click='goBack()']").click();
+			Tools.forceToWait(BuildConfig.pageWaitTime);
+		} else {
+			submit();
+			checkStatus();
+		}
+	}
+	
+	private void checkQuestionAnswer(WebElement ac, String answer) {
+		String type = ac.getAttribute("ng-if");
+		if (type.contains("text")) {
+			Assert.assertEquals(Tools.getElementTextContent(ac), answer);
+		}
 	}
 	
 	private void doQuestion(WebElement ac, String answer) {
@@ -133,7 +152,11 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 			Tools.forceToWait(2);
 			findElement(".popup> .popup-buttons > button").click();
 			Tools.forceToWait(2);
-			Assert.assertNotNull(sw.waitForElement("//*[contains(concat(' ', @class, ' '), 'congrate-header')][text()='Submission Successful']", ElementType.XPATH, 60));
+			if (isTeam) {
+				Assert.assertNotNull(sw.waitForElement("//*[contains(concat(' ', @class, ' '), 'congrate-header')][text()='Team Submission Successful']", ElementType.XPATH, 60));
+			} else {
+				Assert.assertNotNull(sw.waitForElement("//*[contains(concat(' ', @class, ' '), 'congrate-header')][text()='Submission Successful']", ElementType.XPATH, 60));
+			}
 			sw.waitForElement(".modal button").click();
 			Tools.forceToWait(BuildConfig.pageWaitTime);
 		} catch (Error e) {
@@ -150,6 +173,14 @@ public abstract class TestAppv1Assessment extends Appv1TestTemplate {
 
 	public int getAssessmentLocation() {
 		return assessmentLocation;
+	}
+
+	public void setTeam(boolean isTeam) {
+		this.isTeam = isTeam;
+	}
+
+	public void setCheckAnswers(boolean checkAnswers) {
+		this.checkAnswers = checkAnswers;
 	}
 	
 }

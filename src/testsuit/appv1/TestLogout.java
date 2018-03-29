@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import service.Tools;
+import service.UIAction;
 import testsuit.Appv1TestTemplate;
 
 
@@ -18,7 +19,7 @@ public class TestLogout extends Appv1TestTemplate {
 
 	@Test(description = "test new student log out for App v1", groups = "practera_appv1_logout")
 	public void main() {
-		sw.waitForElement(".tab-nav > a:nth-of-type(4)").click();
+		UIAction.waitForElementVisible(sw, ".tab-nav > a:nth-of-type(4)").click();
 		
 		sw.waitForElement(".jsmbp-settings-container ion-item[ng-click='logout()']").click();
 		sw.waitForElement(".jsmbp-login-form");
