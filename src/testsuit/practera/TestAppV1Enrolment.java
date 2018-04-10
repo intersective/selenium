@@ -37,11 +37,11 @@ public class TestAppV1Enrolment extends TestEnrolment {
 		ldb.addAStudentIntoATeam(teamName, studentUserName);
 		
 		driver.get(regUrl);
+		Tools.forceToWait(2);
 		Tools.forceToWait(5);
-		WebElement itemCheckBox = waitForVisibleWithScroll(".item-checkbox");
-		itemCheckBox.click();
-		
-		waitForVisibleWithScroll(".item-checkbox + button").click();
+		WebElement itemCheckBox = waitForVisibleWithScroll(".item-checkbox > .checkbox > i");
+		org.openqa.selenium.interactions.Actions oneAction = new org.openqa.selenium.interactions.Actions(driver);
+		oneAction.moveToElement(itemCheckBox).click().build().perform();
 		Tools.forceToWait(2);
 		
 		sw.waitForElement("input[name='uPassword']").sendKeys(new String[] { BuildConfig.appv1UserPassword });
@@ -50,6 +50,10 @@ public class TestAppV1Enrolment extends TestEnrolment {
 		
 		sw.waitForElement(".popup-buttons");
 		findElement(".popup-buttons > button:nth-of-type(1)").click();
+		
+		waitForLoadFinished();
+		Tools.forceToWait(10);
+		sw.waitForElement("ion-nav-view[name='home']");
 	}
 
 	@Override
